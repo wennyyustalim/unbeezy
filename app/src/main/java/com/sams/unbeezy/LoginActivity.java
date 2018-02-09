@@ -56,7 +56,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        Log.d(TAG,"Name:"+currentUser.getDisplayName());
+        updateUI(currentUser);
+
     }
 
 
@@ -96,6 +97,7 @@ public class LoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -105,6 +107,17 @@ public class LoginActivity extends AppCompatActivity {
                         // ...
                     }
                 });
+    }
+
+    private void updateUI(FirebaseUser user) {
+
+        if (user != null) {
+            findViewById(R.id.sign_in_button).setVisibility(View.GONE);
+            Intent intent = new Intent(this,MainActivity.class);
+            startActivity(intent);
+        } else {
+            findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
+        }
     }
 
 }
