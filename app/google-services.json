@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "758810798784",
+    "firebase_url": "https://beezyserver.firebaseio.com",
+    "project_id": "beezyserver",
+    "storage_bucket": "beezyserver.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:758810798784:android:ddcc32c699b7011c",
+        "android_client_info": {
+          "package_name": "com.sams.unbeezy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "758810798784-khc1tdtu3rhmmau1q7u3mqi9gqsp594l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfvfCn4g8DeNqI1Jth2dLYbvNSK-n7W_E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
