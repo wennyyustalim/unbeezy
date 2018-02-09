@@ -50,14 +50,17 @@ public class LoginActivity extends AppCompatActivity {
         );
 
     }
-
     @Override
     public void onStart() {
         super.onStart();
+
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
-
     }
 
 
@@ -114,7 +117,9 @@ public class LoginActivity extends AppCompatActivity {
         if (user != null) {
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
             Intent intent = new Intent(this,MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
+            finish();
         } else {
             findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
         }
