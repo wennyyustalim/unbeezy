@@ -17,7 +17,8 @@
     <string name="app_title">UNBEEZY</string>
     <string name="web_client_id">758810798784-d520beidkqmq7muvfi6pm924go1dqf3b.apps.googleusercontent.com</string>
     <string name="sign_out">Sign Out</string>
-    <string name="schedule_tab">Schedule</string>
+    <string name="schedule_tab">Sched</string>
     <string name="task_tab">Task</string>
     <string name="alarm_tab">Alarm</string>
+    <string name="user_tab">User</string>
 </resources>
