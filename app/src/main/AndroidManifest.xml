@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity"></activity>
-        <activity android:name=".InsertScheduleActivity" android:theme="@style/NoActionTheme"></activity>
+        <activity android:name=".AddCourseActivity" android:theme="@style/NoActionTheme"></activity>
     </application>
 
 </manifest>
