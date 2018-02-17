@@ -26,8 +26,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".AddCourseActivity" android:theme="@style/NoActionTheme"></activity>
+        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".AddCourseActivity"
+            android:theme="@style/NoActionTheme" />
+        <activity
+            android:name=".EditTaskActivity"
+            android:label="@string/edit_task_activity_label"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
+        </activity>
     </application>
 
 </manifest>

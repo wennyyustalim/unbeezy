@@ -1,5 +1,6 @@
 package com.sams.unbeezy;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -54,5 +55,10 @@ public class MainActivity extends BaseActivity {
         for(int i = 0; i < icons.length; i++) {
           tabLayout.getTabAt(i).setIcon(icons[i]);
         }
+    }
+
+    public void addTask(View view) {
+        Intent intent = new Intent(this, EditTaskActivity.class);
+        startActivity(intent);
     }
 }
