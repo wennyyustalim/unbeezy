@@ -9,5 +9,14 @@ import java.util.List;
  */
 
 public class SchedulesModel implements Serializable{
-    private SchedulesItemModel[][] schedulesItemModels;
+    private SchedulesItemModel[][] data;
+
+    public SchedulesModel() {
+        data = new SchedulesItemModel[13][8];
+    }
+
+    public SchedulesItemModel[][] getData() {
+        return data;
+    }
+
 }

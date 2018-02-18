@@ -8,12 +8,14 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.Gson;
 
 /**
  * Created by kennethhalim on 2/9/18.
  */
 
 public abstract class BaseActivity extends AppCompatActivity{
+    Gson gson = new Gson();
     @Override
     public void onStart(){
         super.onStart();

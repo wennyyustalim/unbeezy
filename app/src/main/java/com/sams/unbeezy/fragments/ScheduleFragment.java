@@ -14,8 +14,11 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.sams.unbeezy.AddCourseActivity;
 import com.sams.unbeezy.R;
+import com.sams.unbeezy.models.SchedulesItemModel;
+import com.sams.unbeezy.models.SchedulesModel;
 
 import java.util.Random;
 
@@ -25,6 +28,9 @@ import java.util.Random;
  */
 
 public class ScheduleFragment extends Fragment {
+
+    SchedulesModel schedulesData;
+    Gson gson = new Gson();
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -32,15 +38,21 @@ public class ScheduleFragment extends Fragment {
         // properly.
         View rootView = inflater.inflate(
                 R.layout.fragment_schedule, container, false);
+        schedulesData = new SchedulesModel();
+        SchedulesItemModel schedulesItemModel = new SchedulesItemModel();
+        schedulesItemModel.setCourseKey("IF2250");
+        schedulesItemModel.setColorHex("#FF00FF");
+        schedulesItemModel.setClassRoom("7606");
+        schedulesData.getData()[1][2] = schedulesItemModel;
         FloatingActionButton scheduleFAB = rootView.findViewById(R.id.schedule_insert_fab);
         scheduleFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(),AddCourseActivity.class);
+                intent.putExtra("scheduleData", gson.toJson(schedulesData));
                 startActivity(intent);
             }
         });
-
         return rootView;
     }
 

@@ -10,7 +10,7 @@ public class CoursesModel implements Serializable {
     private String course_id;
     private String course_name;
     private String color_hex;
-    private Integer schedules[];
+    private CourseScheduleItemModel schedules[];
     private String lecturer_name;
     private String lecturer_email;
     private String lecturer_phone;
@@ -36,7 +36,7 @@ public class CoursesModel implements Serializable {
         return lecturer_phone;
     }
 
-    public Integer[] getSchedules() {
+    public CourseScheduleItemModel[] getSchedules() {
         return schedules;
     }
 
@@ -52,7 +52,7 @@ public class CoursesModel implements Serializable {
         this.color_hex = color_hex;
     }
 
-    public void setSchedules(Integer[] schedules) {
+    public void setSchedules(CourseScheduleItemModel[] schedules) {
         this.schedules = schedules;
     }
 
