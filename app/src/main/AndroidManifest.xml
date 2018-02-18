@@ -31,6 +31,9 @@
             android:name=".AddCourseActivity"
             android:theme="@style/NoActionTheme" />
         <activity
+            android:name=".AddAlarmActivity"
+            android:theme="@style/NoActionTheme" />
+        <activity
             android:name=".EditTaskActivity"
             android:label="@string/edit_task_activity_label"
             android:parentActivityName=".MainActivity">
