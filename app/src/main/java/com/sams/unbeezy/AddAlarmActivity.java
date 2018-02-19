@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.ToggleButton;
@@ -43,6 +44,13 @@ public class AddAlarmActivity extends BaseActivity {
         alarmTextView = (TextView) findViewById(R.id.alarm_text);
         ToggleButton alarmToggle = (ToggleButton) findViewById(R.id.alarm_toggle);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Button saveButton = findViewById(R.id.button_save_alarm);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveResult();
+            }
+        });
     }
 
     public void onToggleClicked(View view) {
@@ -63,5 +71,12 @@ public class AddAlarmActivity extends BaseActivity {
 
     public void setAlarmText(String alarmText) {
         alarmTextView.setText(alarmText);
+    }
+
+    private void saveResult() {
+        Intent intent = new Intent();
+        //intent.putExtra("alarmList", gson.toJson(alarmDataMap.values()));
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }

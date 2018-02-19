@@ -41,9 +41,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        <activity android:name=".SelectScheduleActivity"
-            android:theme="@style/NoActionTheme"
-            ></activity>
+        <activity
+            android:name=".SelectScheduleActivity"
+            android:theme="@style/NoActionTheme">
+        </activity>
+        <receiver android:name=".AlarmReceiver"/>
     </application>
 
 </manifest>
