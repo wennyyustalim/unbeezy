@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by kennethhalim on 2/14/18.
  */
 
-public class CoursesModel implements Serializable {
+public class CourseModel implements Serializable {
     private String course_id;
     private String course_name;
     private String color_hex;

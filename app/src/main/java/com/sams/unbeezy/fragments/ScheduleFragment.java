@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,12 +54,12 @@ public class ScheduleFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        setTable(rootView);
         return rootView;
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    private void setTable(View view) {
+
         Context context = getContext();
         TableLayout tableLayout = view.findViewById(R.id.table_schedule);
         for (int i =0; i<11;i++) {
@@ -87,6 +88,13 @@ public class ScheduleFragment extends Fragment {
             }
             tableLayout.addView(tableRow);
         }
+
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
 
     }
 }
