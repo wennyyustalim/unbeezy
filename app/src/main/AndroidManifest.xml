@@ -35,15 +35,14 @@
             android:theme="@style/NoActionTheme" />
         <activity
             android:name=".EditTaskActivity"
-            android:label="@string/edit_task_activity_label"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/NoActionTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
         <activity android:name=".SelectScheduleActivity"
-            android:theme="@style/NoActionTheme"
-            ></activity>
+            android:theme="@style/NoActionTheme"/>
     </application>
 
 </manifest>

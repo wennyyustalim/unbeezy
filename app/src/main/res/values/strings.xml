@@ -23,5 +23,4 @@
     <string name="user_tab">User</string>
     <string name="to_do_list">To-Do List</string>
     <string name="add_task">Add Task</string>
-    <string name="edit_task_activity_label">Edit Task</string>
 </resources>
