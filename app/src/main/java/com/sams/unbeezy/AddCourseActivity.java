@@ -6,6 +6,7 @@ import android.support.annotation.ColorInt;
 import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -51,6 +52,14 @@ public class AddCourseActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 showSelectScheduleActivity();
+            }
+        });
+
+        Button buttonAddCourse = findViewById(R.id.button_add_course);
+        buttonAddCourse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveCourse();
             }
         });
 
@@ -103,7 +112,7 @@ public class AddCourseActivity extends BaseActivity {
 
     boolean checkCourseId() {
         EditText courseId = findViewById(R.id.course_id);
-        if(courseId.getText() == null) {
+        if(courseId.getText() != null && !courseId.getText().toString().equals("")) {
             model.setCourseId(courseId.getText().toString());
             return true;
         } else {
@@ -114,8 +123,8 @@ public class AddCourseActivity extends BaseActivity {
 
     boolean checkCourseName() {
         EditText courseName = findViewById(R.id.course_name);
-        if(courseName.getText() == null) {
-            model.setCourseId(courseName.getText().toString());
+        if(courseName.getText() != null && !courseName.getText().toString().equals("")) {
+            model.setCourseName(courseName.getText().toString());
             return true;
         } else {
             courseName.setError(NO_VALUE_ERROR);
@@ -125,8 +134,8 @@ public class AddCourseActivity extends BaseActivity {
 
     boolean checkLecturerName() {
         EditText lecturerName = findViewById(R.id.lecturer_name);
-        if(lecturerName.getText() == null) {
-            model.setCourseId(lecturerName.getText().toString());
+        if(lecturerName.getText() != null && !lecturerName.getText().toString().equals("")) {
+            model.setLecturerName(lecturerName.getText().toString());
             return true;
         } else {
             lecturerName.setError(NO_VALUE_ERROR);
@@ -137,10 +146,9 @@ public class AddCourseActivity extends BaseActivity {
     boolean checkLecturerEmail() {
         EditText lecturerEmail = findViewById(R.id.lecturer_email);
         if(lecturerEmail.getText() == null) {
-            model.setCourseId(lecturerEmail.getText().toString());
+            model.setLecturerEmail(lecturerEmail.getText().toString());
             return true;
         } else {
-            lecturerEmail.setError(NO_VALUE_ERROR);
             return false;
         }
     }
@@ -148,24 +156,52 @@ public class AddCourseActivity extends BaseActivity {
     boolean checkLecturerPhone() {
         EditText lecturerPhone = findViewById(R.id.lecturer_phone);
         if(lecturerPhone.getText() == null) {
-            model.setCourseId(lecturerPhone.getText().toString());
+            model.setLecturerPhone(lecturerPhone.getText().toString());
             return true;
         } else {
-            lecturerPhone.setError(NO_VALUE_ERROR);
             return false;
         }
     }
 
     boolean checkCourseSchedule() {
-        return true;
+        if(model.getSchedules() != null && model.getSchedules().length != 0) {
+            cancelIcon.setVisibility(View.GONE);
+            checkedIcon.setVisibility(View.VISIBLE);
+            return true;
+        } else {
+            cancelIcon.setVisibility(View.VISIBLE);
+            checkedIcon.setVisibility(View.GONE);
+            return false;
+
+        }
     }
 
     boolean checkCourseColorFlag() {
-        return true;
+        if(model.getColorHex() != null && !model.getColorHex().equals("")) {
+            return true;
+        } else {
+            return false;
+
+        }
     }
 
-    void safeCourse() {
-
+    boolean checkComplete() {
+        boolean isComplete = true;
+        checkLecturerEmail();
+        checkLecturerPhone();
+        isComplete = isComplete && checkCourseId();
+        isComplete = isComplete && checkCourseName();
+        isComplete = isComplete && checkCourseColorFlag();
+        isComplete = isComplete && checkCourseSchedule();
+        isComplete = isComplete && checkLecturerName();
+        return isComplete;
     }
-
+    void saveCourse() {
+        if(checkComplete()) {
+            Intent intent = new Intent();
+            intent.putExtra("newCourse", gson.toJson(model));
+            setResult(RESULT_OK, intent);
+            finish();
+        }
+    }
 }
