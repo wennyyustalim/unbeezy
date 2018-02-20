@@ -32,7 +32,12 @@
             android:theme="@style/NoActionTheme" />
         <activity
             android:name=".AddAlarmActivity"
-            android:theme="@style/NoActionTheme" />
+            android:theme="@style/NoActionTheme"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
+        </activity>
         <activity
             android:name=".EditTaskActivity"
             android:parentActivityName=".MainActivity"
@@ -43,6 +48,7 @@
         </activity>
         <activity android:name=".SelectScheduleActivity"
             android:theme="@style/NoActionTheme"/>
+        <receiver android:name=".alarm.AlarmReceiver"/>
     </application>
 
 </manifest>

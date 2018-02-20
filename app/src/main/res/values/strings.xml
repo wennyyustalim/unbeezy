@@ -23,6 +23,9 @@
     <string name="user_tab">User</string>
     <string name="to_do_list">To-Do List</string>
     <string name="add_task">Add Task</string>
+    <string name="edit_task_activity_label">Edit Task</string>
+    <string name="alarm_on_toast">Alarm switched on!</string>
+    <string name="alarm_off_toast">Alarm switched off!</string>
     <string name="task_title">Task Title</string>
     <string name="task_title_hint">Enter task title</string>
     <string name="save">Save</string>

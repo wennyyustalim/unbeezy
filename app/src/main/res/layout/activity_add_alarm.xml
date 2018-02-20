@@ -16,62 +16,72 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
+        android:layout_marginTop="68dp"
+        android:gravity="center_horizontal"
+        android:minHeight="600dp"
+        android:orientation="vertical"
+        android:paddingEnd="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingStart="8dp"
+        android:weightSum="12"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-        <LinearLayout
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+        <TimePicker
+            android:id="@+id/alarm_time_picker"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="68dp"
-            android:minHeight="600dp"
-            android:orientation="vertical"
-            android:paddingEnd="8dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingStart="8dp"
-            android:weightSum="12"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0">
+            android:layout_height="356dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:headerBackground="@drawable/background_primary"
+            android:numbersSelectorColor="@color/colorPrimary"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-            <TimePicker
-                android:id="@+id/alarm_time_picker"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:headerBackground="@drawable/background_primary"
-                android:numbersSelectorColor="@color/colorPrimary"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        <ToggleButton
+            android:id="@+id/alarm_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/alarm_time_picker"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="4dp"
+            android:onClick="onToggleClicked"
+            android:text="Alarm On/Off"
+            android:textColorLink="@color/colorPrimary"
+            app:layout_constraintTop_toBottomOf="@+id/alarm_time_picker"
+            tools:layout_editor_absoluteX="148dp" />
 
-            <ToggleButton
-                android:id="@+id/alarm_toggle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/alarm_time_picker"
-                android:layout_centerHorizontal="true"
-                android:onClick="onToggleClicked"
-                android:text="Alarm On/Off"
-                android:textColorLink="@color/colorPrimary"
-                app:layout_constraintTop_toBottomOf="@+id/alarm_time_picker" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text=""
-                android:id="@+id/alarm_text"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                android:layout_below="@+id/alarm_toggle"
-                app:layout_constraintTop_toBottomOf="@+id/alarm_toggle"/>
-        </LinearLayout>
-    </ScrollView>
+        <TextView
+            android:id="@+id/alarm_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/alarm_toggle"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            app:layout_constraintTop_toBottomOf="@+id/alarm_toggle" />
+
+        <Button
+            android:id="@+id/button_save_alarm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="15dp"
+            android:background="@color/colorPrimary"
+            android:elevation="4dp"
+            android:text="Save"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:onClick="onSaveButtonClicked"
+            app:layout_constraintTop_toBottomOf="@+id/alarm_toggle" />
+
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>
