@@ -16,6 +16,7 @@ import android.widget.ToggleButton;
 
 import com.sams.unbeezy.alarm.AlarmReceiver;
 import com.sams.unbeezy.fragments.AlarmFragment;
+import com.sams.unbeezy.models.AlarmsItemModel;
 
 import java.util.Calendar;
 
@@ -25,12 +26,15 @@ import java.util.Calendar;
 
 public class AddAlarmActivity extends BaseActivity {
     String ACTIVITY_TITLE = "Add New Alarm";
+    String LOG_TAG = "AlarmFragment";
     AlarmManager alarmManager;
     private PendingIntent pendingIntent;
     private TimePicker alarmTimePicker;
     private static AddAlarmActivity inst;
     private TextView alarmTextView;
     public static final String NEW_ALARM = "com.sams.unbeezy.extra.REPLY";
+
+    AlarmsItemModel newAlarm = new AlarmsItemModel();
 
     public static AddAlarmActivity instance() {
         return inst;
@@ -71,6 +75,7 @@ public class AddAlarmActivity extends BaseActivity {
                 if(isChecked){
                     long triggerTime = SystemClock.elapsedRealtime() + 10*1000;
                     long repeatInterval = 10*1000;
+                    newAlarm.switchOn();
 
                     //If the Toggle is turned on, set the repeating alarm with a 30 second interval
                     alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
@@ -81,7 +86,7 @@ public class AddAlarmActivity extends BaseActivity {
                     //Cancel the alarm and notification if the alarm is turned off
                     alarmManager.cancel(notifyPendingIntent);
                     mNotificationManager.cancelAll();
-
+                    newAlarm.switchOff();
                     toastMessage = getString(R.string.alarm_off_toast);
                 }
                 Toast.makeText(AddAlarmActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
@@ -109,12 +114,24 @@ public class AddAlarmActivity extends BaseActivity {
         alarmTextView.setText(alarmText);
     }
 
-    private void returnNewAlarm(View view) {
-        String resultTimePicker = alarmTimePicker.getCurrentHour().toString();
+    public void onSaveButtonClicked(View view) {
+        Log.d(LOG_TAG, "Save button clicked");
+        Log.d(LOG_TAG, String.format("Hour: %d", alarmTimePicker.getCurrentHour()));
+        Log.d(LOG_TAG, String.format("Minute: %d", alarmTimePicker.getCurrentMinute()));
+        // Try passing data through bundle
+//        Bundle bundle = new Bundle();
+//        bundle.putSerializable("newAlarm", newAlarm);
+//        newAlarm.setHour(alarmTimePicker.getCurrentHour());
+//        newAlarm.setMinute(alarmTimePicker.getCurrentMinute());
+//        AlarmFragment fragInfo = new AlarmFragment();
+//        fragInfo.setArguments(bundle);
 
+        // Try passing data through intent
+        String resultTimePicker = alarmTimePicker.getCurrentHour().toString();
         Intent resultIntent = new Intent();
         resultIntent.putExtra("newAlarm", gson.toJson(resultTimePicker));
         setResult(RESULT_OK, resultIntent);
+
         finish();
     }
 }

@@ -26,4 +26,11 @@
     <string name="edit_task_activity_label">Edit Task</string>
     <string name="alarm_on_toast">Alarm switched on!</string>
     <string name="alarm_off_toast">Alarm switched off!</string>
+    <string name="task_title">Task Title</string>
+    <string name="task_title_hint">Enter task title</string>
+    <string name="save">Save</string>
+    <string name="time_picker_format_hint">hh:mm</string>
+    <string name="time">Time</string>
+    <string name="date_picker_format_hint">dd/mm/yyyy</string>
+    <string name="date">Date</string>
 </resources>
