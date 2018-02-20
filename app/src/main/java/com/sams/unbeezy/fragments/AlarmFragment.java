@@ -4,11 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.ToggleButton;
 
 import com.google.gson.Gson;
 import com.sams.unbeezy.AddAlarmActivity;
@@ -17,11 +16,15 @@ import com.sams.unbeezy.R;
 import com.sams.unbeezy.models.AlarmsItemModel;
 import com.sams.unbeezy.models.AlarmsModel;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by kennethhalim on 2/12/18.
  */
 
 public class AlarmFragment extends Fragment {
+    public static final int NEW_ALARM_REQUEST = 1;
+
     AlarmsModel alarmsData;
     Gson gson = new Gson();
     @Override
@@ -42,11 +45,22 @@ public class AlarmFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(),AddAlarmActivity.class);
                 intent.putExtra("alarmsData", gson.toJson(alarmsData));
-                startActivity(intent);
+                startActivityForResult(intent, NEW_ALARM_REQUEST);
             }
         });
         return rootView;
     }
 
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == NEW_ALARM_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                String result = data.getStringExtra(AddAlarmActivity.NEW_ALARM);
+                Log.d("Current hour: ", result);
+                Log.d("AlarmFragment", "New Alarm Set");
+            }
+        }
+    }
 
 }
