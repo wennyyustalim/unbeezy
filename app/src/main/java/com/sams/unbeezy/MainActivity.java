@@ -19,6 +19,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -34,6 +35,7 @@ public class MainActivity extends BaseActivity {
         viewPager.setAdapter(mainActivityFragmentsAdapter);
         final TabLayout tabLayout = (TabLayout) findViewById(R.id.main_tab_layout);
         tabLayout.setupWithViewPager(viewPager);
+        viewPager.setOffscreenPageLimit(4);
         setTabIcons(tabLayout);
 //        tabLayout.setOnClickListener(new View.OnClickListener() {
 //            @Override

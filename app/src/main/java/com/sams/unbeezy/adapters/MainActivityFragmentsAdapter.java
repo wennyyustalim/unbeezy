@@ -28,7 +28,7 @@ public class MainActivityFragmentsAdapter extends FragmentStatePagerAdapter {
         Fragment fragment;
         Bundle args = new Bundle();
         switch (i) {
-            case 0: fragment = ScheduleFragment.getInstance(); break;
+            case 0: fragment = new ScheduleFragment(); break;
             case 1: fragment = new TaskFragment(); break;
             case 2: fragment = new AlarmFragment(); break;
             case 3: fragment = new UserFragment(); break;
