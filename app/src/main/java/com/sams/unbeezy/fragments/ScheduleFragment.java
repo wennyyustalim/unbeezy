@@ -24,7 +24,6 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.sams.unbeezy.AddCourseActivity;
 import com.sams.unbeezy.R;
-import com.sams.unbeezy.adapters.ScheduleFragmentCoursesListAdapter;
 import com.sams.unbeezy.models.CourseModel;
 import com.sams.unbeezy.models.CourseScheduleItemModel;
 import com.sams.unbeezy.models.SchedulesItemModel;
@@ -46,13 +45,11 @@ import static android.app.Activity.RESULT_OK;
  */
 
 public class ScheduleFragment extends Fragment {
-    static ScheduleFragment _instance;
     SchedulesModel schedulesData;
     List<CourseModel> coursesArray;
     LayoutInflater inflater;
     LinearLayout coursesListView;
     Gson gson = new Gson();
-    ScheduleFragmentCoursesListAdapter coursesListAdapter;
     int REQUEST_CODE = 1;
 
     public static ScheduleFragment getInstance() {
