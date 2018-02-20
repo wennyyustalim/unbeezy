@@ -68,9 +68,4 @@ public class MainActivity extends BaseActivity {
           tabLayout.getTabAt(i).setIcon(icons[i]);
         }
     }
-
-    public void addTask(View view) {
-        Intent intent = new Intent(this, EditTaskActivity.class);
-        startActivity(intent);
-    }
 }
