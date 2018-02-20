@@ -18,6 +18,13 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mainActivityFragmentsAdapter = new MainActivityFragmentsAdapter(getSupportFragmentManager());
+        viewPager = (ViewPager) findViewById(R.id.main_view_pager);
+        viewPager.setAdapter(mainActivityFragmentsAdapter);
+        final TabLayout tabLayout = (TabLayout) findViewById(R.id.main_tab_layout);
+        tabLayout.setupWithViewPager(viewPager);
+        viewPager.setOffscreenPageLimit(4);
+        setTabIcons(tabLayout);
     }
 
     @Override
@@ -30,13 +37,7 @@ public class MainActivity extends BaseActivity {
 //                signOut();
 //            }
 //        });
-        mainActivityFragmentsAdapter = new MainActivityFragmentsAdapter(getSupportFragmentManager());
-        viewPager = (ViewPager) findViewById(R.id.main_view_pager);
-        viewPager.setAdapter(mainActivityFragmentsAdapter);
-        final TabLayout tabLayout = (TabLayout) findViewById(R.id.main_tab_layout);
-        tabLayout.setupWithViewPager(viewPager);
-        viewPager.setOffscreenPageLimit(4);
-        setTabIcons(tabLayout);
+
 //        tabLayout.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
