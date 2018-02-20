@@ -44,6 +44,18 @@ public class MainActivity extends BaseActivity {
 //
 //        mainActivityFragmentsAdapter
     }
+    int position;
+    @Override
+    protected void onPause() {
+        super.onPause();
+        position = viewPager.getCurrentItem();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        viewPager.setCurrentItem(position);
+    }
 
     public void setTabIcons(TabLayout tabLayout) {
         int icons[]= {
