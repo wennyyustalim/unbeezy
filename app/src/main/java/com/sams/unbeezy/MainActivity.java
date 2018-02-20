@@ -68,4 +68,9 @@ public class MainActivity extends BaseActivity {
           tabLayout.getTabAt(i).setIcon(icons[i]);
         }
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }
