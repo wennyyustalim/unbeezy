@@ -26,8 +26,8 @@
     <string name="task_title">Task Title</string>
     <string name="task_title_hint">Enter task title</string>
     <string name="save">Save</string>
-    <string name="time_picker_format_hint">hh:mm</string>
+    <string name="time_picker_hint">hh:mm</string>
     <string name="time">Time</string>
-    <string name="date_picker_format_hint">dd/mm/yyyy</string>
+    <string name="date_picker_hint">dd/MM/yyyy</string>
     <string name="date">Date</string>
 </resources>
