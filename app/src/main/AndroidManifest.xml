@@ -51,6 +51,27 @@
             android:name=".services.DataSyncService"
             android:enabled="true"
             android:exported="true" />
+
+        <activity
+            android:name=".PanicAttackActivity"
+            android:theme="@style/NoActionTheme" />
+
+        <service
+            android:name=".services.dismisser.MyIntentService"
+            android:exported="false" />
+        <service
+            android:name=".services.dismisser.MyService"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".services.dismisser.PanicDismisserService"
+            android:exported="false" />
+        <service
+            android:name=".services.dismisser.ShakeItOffDismisserService"
+            android:exported="false" />
+        <service
+            android:name=".services.dismisser.RiseAndShineDismisserService"
+            android:exported="false"></service>
     </application>
 
 </manifest>
