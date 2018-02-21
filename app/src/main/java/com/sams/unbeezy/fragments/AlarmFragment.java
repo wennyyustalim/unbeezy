@@ -9,11 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.sams.unbeezy.AddAlarmActivity;
 import com.sams.unbeezy.R;
 import com.sams.unbeezy.models.AlarmModel;
+
+import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -70,5 +73,35 @@ public class AlarmFragment extends Fragment {
 //            alarm.setHour(1);
 //            alarm.setMinute(23);
 //        }
+    }
+
+    public void updateLayout(final List<AlarmModel> alarmsArray) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                adaptLinearLayout(alarmListView, alarmsArray);
+            }
+        });
+    }
+
+    private void adaptLinearLayout(LinearLayout layout, List<AlarmModel> alarmsArray) {
+        layout.removeAllViews();
+        Log.d("NEWADAPTOR", gson.toJson(alarmsArray));
+        int height = 0;
+        for (AlarmModel item : alarmsArray) {
+            View inflated = inflateLayout(item, layout);
+            layout.addView(inflated);
+            height += inflated.getMeasuredHeight();
+        }
+        layout.getLayoutParams().height = height;
+    }
+
+    private View inflateLayout(AlarmModel model, ViewGroup parent) {
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View inflated = inflater.inflate(R.layout.component_alarms_list_view, parent, false);
+        TextView alarmTime = inflated.findViewById(R.id.alarm_time);
+        alarmTime.setText(String.format("%d:%d", model.getHour(), model.getMinute()));
+
+        return inflated;
     }
 }

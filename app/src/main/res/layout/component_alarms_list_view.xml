@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    android:paddingBottom="10dp">
+
+    <TextView
+        android:id="@+id/alarm_time"
+        android:layout_width="107dp"
+        android:layout_height="50dp"
+        android:text="06:00"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="45dp"
+        tools:layout_editor_absoluteY="20dp" />
+
+    <ToggleButton
+        android:id="@+id/alarm_toggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/alarm_time"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="128dp"
+        android:onClick="onToggleClicked"
+        android:text="Alarm On/Off"
+        android:textColorLink="@color/colorPrimary"
+        app:layout_constraintStart_toEndOf="@+id/alarm_time"
+        tools:layout_editor_absoluteY="21dp" />
+
+</android.support.constraint.ConstraintLayout>
