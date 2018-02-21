@@ -134,7 +134,15 @@ public class AlarmFragment extends Fragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View inflated = inflater.inflate(R.layout.component_alarms_list_view, parent, false);
         TextView alarmTime = inflated.findViewById(R.id.alarm_time);
-        alarmTime.setText(String.format("%d:%d", model.getHour(), model.getMinute()));
+        String hour = Integer.toString(model.getHour());
+        String minute = Integer.toString(model.getMinute());
+        if (model.getHour() < 10) {
+            hour = "0" + hour;
+        }
+        if (model.getMinute() < 10) {
+            minute = "0" + minute;
+        }
+        alarmTime.setText(String.format("%s:%s", hour, minute));
 
         return inflated;
     }
