@@ -1,4 +1,4 @@
-package com.sams.unbeezy.alarm;
+package com.sams.unbeezy.receivers;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;

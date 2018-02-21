@@ -1,7 +1,5 @@
 package com.sams.unbeezy.fragments;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,11 +16,9 @@ import android.widget.ToggleButton;
 import com.google.gson.Gson;
 import com.sams.unbeezy.AddAlarmActivity;
 import com.sams.unbeezy.R;
-import com.sams.unbeezy.alarm.AlarmReceiver;
 import com.sams.unbeezy.controllers.AlarmFragmentController;
 import com.sams.unbeezy.models.AlarmModel;
 
-import java.util.Calendar;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;

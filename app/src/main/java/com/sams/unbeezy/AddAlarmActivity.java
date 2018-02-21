@@ -3,19 +3,15 @@ package com.sams.unbeezy;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.util.Log;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.sams.unbeezy.alarm.AlarmReceiver;
+import com.sams.unbeezy.receivers.AlarmReceiver;
 import com.sams.unbeezy.models.AlarmModel;
 
 import java.util.Calendar;
