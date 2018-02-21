@@ -45,7 +45,7 @@
             android:name=".SelectScheduleActivity"
             android:theme="@style/NoActionTheme" />
 
-        <receiver android:name=".alarm.AlarmReceiver" />
+        <receiver android:name=".receivers.AlarmReceiver" />
 
         <service
             android:name=".services.DataSyncService"

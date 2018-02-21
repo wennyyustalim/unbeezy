@@ -5,16 +5,13 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.util.Log;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.sams.unbeezy.alarm.AlarmReceiver;
+import com.sams.unbeezy.receivers.AlarmReceiver;
 import com.sams.unbeezy.models.AlarmModel;
 
 import java.util.Calendar;
@@ -51,8 +48,6 @@ public class AddAlarmActivity extends BaseActivity {
         Intent notifyIntent = new Intent(this, AlarmReceiver.class);
         boolean  alarmUp = (PendingIntent.getBroadcast(this, 0, notifyIntent, PendingIntent.FLAG_NO_CREATE) != null);
         alarmToggle.setChecked(alarmUp);
-
-
     }
 
     public void onToggleClicked(View view) {
@@ -60,15 +55,20 @@ public class AddAlarmActivity extends BaseActivity {
 
         if(((ToggleButton) view).isChecked()) {
             newAlarm.switchOn();
+
+
+            // Set the alarm to start at 8:30 a.m.
             Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(System.currentTimeMillis());
             calendar.set(Calendar.HOUR_OF_DAY, alarmTimePicker.getCurrentHour());
             calendar.set(Calendar.MINUTE, alarmTimePicker.getCurrentMinute());
+            calendar.set(Calendar.SECOND, 0);
 
-            Intent myIntent = new Intent(AddAlarmActivity.this, AlarmReceiver.class);
-            pendingIntent = PendingIntent.getBroadcast(AddAlarmActivity.this, 0, myIntent, 0);
-            alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+            Intent intent = new Intent(AddAlarmActivity.this, AlarmReceiver.class);
+            pendingIntent = PendingIntent.getBroadcast(AddAlarmActivity.this, 0, intent, 0);
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),1000 * 10, pendingIntent);
+
             toastMessage = getString(R.string.alarm_on_toast);
-
         } else {
             newAlarm.switchOff();
             alarmManager.cancel(pendingIntent);
