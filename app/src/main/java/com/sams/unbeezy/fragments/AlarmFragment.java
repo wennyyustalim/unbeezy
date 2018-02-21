@@ -1,7 +1,10 @@
 package com.sams.unbeezy.fragments;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -9,11 +12,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.google.gson.Gson;
 import com.sams.unbeezy.AddAlarmActivity;
 import com.sams.unbeezy.R;
+import com.sams.unbeezy.alarm.AlarmReceiver;
+import com.sams.unbeezy.controllers.AlarmFragmentController;
 import com.sams.unbeezy.models.AlarmModel;
+
+import java.util.Calendar;
+import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -30,6 +40,25 @@ public class AlarmFragment extends Fragment {
     LinearLayout alarmListView;
 
     Gson gson = new Gson();
+
+    AlarmFragmentController controller;
+    private static AlarmFragment _instance;
+    public AlarmFragment() {
+        controller = new AlarmFragmentController(this);
+    }
+
+    public static AlarmFragment getInstance() {
+        if(_instance == null) {
+            _instance = new AlarmFragment();
+        }
+        return _instance;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -55,20 +84,58 @@ public class AlarmFragment extends Fragment {
             if (resultCode == RESULT_OK) {
                 String intentString = data.getStringExtra("newAlarm");
                 AlarmModel newAlarm = gson.fromJson(intentString,AlarmModel.class);
+                controller.addData(newAlarm);
                 Log.d(LOG_TAG, String.format("Hour: %d", newAlarm.getHour()));
                 Log.d(LOG_TAG, String.format("Minute: %d", newAlarm.getMinute()));
             }
         }
+    }
 
-//        AlarmModel alarm = (AlarmModel) getArguments().getSerializable("newAlarm");
-//        if (alarm != null) {
-//            int h = alarm.getHour();
-//            int m = alarm.getMinute();
-//            Log.d(LOG_TAG, String.format("Hour: %d", h));
-//            Log.d(LOG_TAG, String.format("Minute: %d", m));
-//        } else {
-//            alarm.setHour(1);
-//            alarm.setMinute(23);
-//        }
+    public void onToggleClicked(View view) {
+        if(((ToggleButton) view).isChecked()) {
+            Log.d(LOG_TAG, "Alarm On");
+//            newAlarm.switchOn();
+//            Calendar calendar = Calendar.getInstance();
+//            calendar.set(Calendar.HOUR_OF_DAY, alarmTimePicker.getCurrentHour());
+//            calendar.set(Calendar.MINUTE, alarmTimePicker.getCurrentMinute());
+//            Intent myIntent = new Intent(AddAlarmActivity.this, AlarmReceiver.class);
+//            pendingIntent = PendingIntent.getBroadcast(AddAlarmActivity.this, 0, myIntent, 0);
+//            alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+        } else {
+//            newAlarm.switchOff();
+//            alarmManager.cancel(pendingIntent);
+//            setAlarmText("");
+            Log.d(LOG_TAG, "Alarm Off");
+        }
+    }
+
+    public void updateLayout(final List<AlarmModel> alarmsArray) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                adaptLinearLayout(alarmListView, alarmsArray);
+            }
+        });
+    }
+
+    private void adaptLinearLayout(LinearLayout layout, List<AlarmModel> alarmsArray) {
+        layout.removeAllViews();
+        Log.d("NEWADAPTOR", gson.toJson(alarmsArray));
+        int height = 0;
+        for (AlarmModel item : alarmsArray) {
+            View inflated = inflateLayout(item, layout);
+            layout.addView(inflated);
+            height += inflated.getMeasuredHeight();
+        }
+        layout.getLayoutParams().height = height;
+    }
+
+    private View inflateLayout(AlarmModel model, ViewGroup parent) {
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View inflated = inflater.inflate(R.layout.component_alarms_list_view, parent, false);
+        TextView alarmTime = inflated.findViewById(R.id.alarm_time);
+        alarmTime.setText(String.format("%d:%d", model.getHour(), model.getMinute()));
+
+        return inflated;
     }
 }

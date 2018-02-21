@@ -29,23 +29,12 @@ public class AddAlarmActivity extends BaseActivity {
     AlarmManager alarmManager;
     private PendingIntent pendingIntent;
     private TimePicker alarmTimePicker;
-    private static AddAlarmActivity inst;
     private TextView alarmTextView;
 
     AlarmModel newAlarm = new AlarmModel();
 
-    public static AddAlarmActivity instance() {
-        return inst;
-    }
-
     private NotificationManager mNotificationManager;
     private static final int NOTIFICATION_ID = 0;
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        inst = this;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,49 +52,31 @@ public class AddAlarmActivity extends BaseActivity {
         boolean  alarmUp = (PendingIntent.getBroadcast(this, 0, notifyIntent, PendingIntent.FLAG_NO_CREATE) != null);
         alarmToggle.setChecked(alarmUp);
 
-        final PendingIntent notifyPendingIntent = PendingIntent.getBroadcast
-                (this, NOTIFICATION_ID, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        alarmToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                String toastMessage;
-                if(isChecked){
-                    long triggerTime = SystemClock.elapsedRealtime() + 10*1000;
-                    long repeatInterval = 10*1000;
-                    newAlarm.switchOn();
-
-                    //If the Toggle is turned on, set the repeating alarm with a 30 second interval
-                    alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                            triggerTime, repeatInterval, notifyPendingIntent);
-
-                    toastMessage = getString(R.string.alarm_on_toast);
-                } else {
-                    //Cancel the alarm and notification if the alarm is turned off
-                    alarmManager.cancel(notifyPendingIntent);
-                    mNotificationManager.cancelAll();
-                    newAlarm.switchOff();
-                    toastMessage = getString(R.string.alarm_off_toast);
-                }
-                Toast.makeText(AddAlarmActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     public void onToggleClicked(View view) {
+        String toastMessage;
+
         if(((ToggleButton) view).isChecked()) {
-            Log.d(LOG_TAG, "Alarm On");
+            newAlarm.switchOn();
             Calendar calendar = Calendar.getInstance();
             calendar.set(Calendar.HOUR_OF_DAY, alarmTimePicker.getCurrentHour());
             calendar.set(Calendar.MINUTE, alarmTimePicker.getCurrentMinute());
+
             Intent myIntent = new Intent(AddAlarmActivity.this, AlarmReceiver.class);
             pendingIntent = PendingIntent.getBroadcast(AddAlarmActivity.this, 0, myIntent, 0);
             alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+            toastMessage = getString(R.string.alarm_on_toast);
+
         } else {
+            newAlarm.switchOff();
             alarmManager.cancel(pendingIntent);
             setAlarmText("");
-            Log.d(LOG_TAG, "Alarm Off");
+            toastMessage = getString(R.string.alarm_off_toast);
+
         }
+        Toast.makeText(AddAlarmActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
     }
 
     public void setAlarmText(String alarmText) {
