@@ -1,7 +1,5 @@
 package com.sams.unbeezy.fragments;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,11 +16,9 @@ import android.widget.ToggleButton;
 import com.google.gson.Gson;
 import com.sams.unbeezy.AddAlarmActivity;
 import com.sams.unbeezy.R;
-import com.sams.unbeezy.alarm.AlarmReceiver;
 import com.sams.unbeezy.controllers.AlarmFragmentController;
 import com.sams.unbeezy.models.AlarmModel;
 
-import java.util.Calendar;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
@@ -134,7 +130,15 @@ public class AlarmFragment extends Fragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View inflated = inflater.inflate(R.layout.component_alarms_list_view, parent, false);
         TextView alarmTime = inflated.findViewById(R.id.alarm_time);
-        alarmTime.setText(String.format("%d:%d", model.getHour(), model.getMinute()));
+        String hour = Integer.toString(model.getHour());
+        String minute = Integer.toString(model.getMinute());
+        if (model.getHour() < 10) {
+            hour = "0" + hour;
+        }
+        if (model.getMinute() < 10) {
+            minute = "0" + minute;
+        }
+        alarmTime.setText(String.format("%s:%s", hour, minute));
 
         return inflated;
     }

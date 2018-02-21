@@ -3,14 +3,20 @@ package com.sams.unbeezy.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.gson.Gson;
 import com.sams.unbeezy.EditTaskActivity;
 import com.sams.unbeezy.R;
+import com.sams.unbeezy.controllers.TaskFragmentController;
+import com.sams.unbeezy.models.TaskModel;
+
+import java.util.ArrayList;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -21,7 +27,17 @@ import static android.app.Activity.RESULT_OK;
 public class TaskFragment extends Fragment {
     public static final int TASK_REQUEST = 2;
     private final String LOG_TAG = getClass().getSimpleName();
+    TaskFragmentController controller;
+
     Button addTaskButton;
+    public RecyclerView taskList;
+
+    Gson gson = new Gson();
+
+    public TaskFragment() {
+        controller = new TaskFragmentController(this);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -30,6 +46,7 @@ public class TaskFragment extends Fragment {
         View rootView = inflater.inflate(
                 R.layout.fragment_task, container, false);
         addTaskButton = (Button) rootView.findViewById(R.id.add_task_button);
+        taskList = (RecyclerView) rootView.findViewById(R.id.task_list);
         addTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,12 +65,15 @@ public class TaskFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == TASK_REQUEST) {
             if (resultCode == RESULT_OK) {
-                String result = data.getStringExtra("editedTask");
-                if (result != null) {
+                try {
+                    String result = data.getStringExtra("editedTask");
                     Log.d(LOG_TAG, String.format("Edited Task: %s", result));
                     Log.d(LOG_TAG, "New task edited");
-                } else {
-                    Log.d(LOG_TAG, "Result is null");
+                    TaskModel taskModel = gson.fromJson(result, TaskModel.class);
+                    controller.addData(taskModel);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.d(LOG_TAG, "Exception found");
                 }
             }
         }
