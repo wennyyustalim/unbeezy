@@ -15,8 +15,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.sams.unbeezy.alarm.AlarmReceiver;
-import com.sams.unbeezy.fragments.AlarmFragment;
-import com.sams.unbeezy.models.AlarmsItemModel;
+import com.sams.unbeezy.models.AlarmModel;
 
 import java.util.Calendar;
 
@@ -26,15 +25,14 @@ import java.util.Calendar;
 
 public class AddAlarmActivity extends BaseActivity {
     String ACTIVITY_TITLE = "Add New Alarm";
-    String LOG_TAG = "AlarmFragment";
+    String LOG_TAG = "AddAlarmActivity";
     AlarmManager alarmManager;
     private PendingIntent pendingIntent;
     private TimePicker alarmTimePicker;
     private static AddAlarmActivity inst;
     private TextView alarmTextView;
-    public static final String NEW_ALARM = "com.sams.unbeezy.extra.REPLY";
 
-    AlarmsItemModel newAlarm = new AlarmsItemModel();
+    AlarmModel newAlarm = new AlarmModel();
 
     public static AddAlarmActivity instance() {
         return inst;
@@ -96,7 +94,7 @@ public class AddAlarmActivity extends BaseActivity {
 
     public void onToggleClicked(View view) {
         if(((ToggleButton) view).isChecked()) {
-            Log.d("AddAlarmActivity", "Alarm On");
+            Log.d(LOG_TAG, "Alarm On");
             Calendar calendar = Calendar.getInstance();
             calendar.set(Calendar.HOUR_OF_DAY, alarmTimePicker.getCurrentHour());
             calendar.set(Calendar.MINUTE, alarmTimePicker.getCurrentMinute());
@@ -106,7 +104,7 @@ public class AddAlarmActivity extends BaseActivity {
         } else {
             alarmManager.cancel(pendingIntent);
             setAlarmText("");
-            Log.d("MyActivity", "Alarm Off");
+            Log.d(LOG_TAG, "Alarm Off");
         }
     }
 
@@ -115,21 +113,11 @@ public class AddAlarmActivity extends BaseActivity {
     }
 
     public void onSaveButtonClicked(View view) {
-        Log.d(LOG_TAG, "Save button clicked");
-        Log.d(LOG_TAG, String.format("Hour: %d", alarmTimePicker.getCurrentHour()));
-        Log.d(LOG_TAG, String.format("Minute: %d", alarmTimePicker.getCurrentMinute()));
-        // Try passing data through bundle
-//        Bundle bundle = new Bundle();
-//        bundle.putSerializable("newAlarm", newAlarm);
-//        newAlarm.setHour(alarmTimePicker.getCurrentHour());
-//        newAlarm.setMinute(alarmTimePicker.getCurrentMinute());
-//        AlarmFragment fragInfo = new AlarmFragment();
-//        fragInfo.setArguments(bundle);
+        newAlarm.setHour(alarmTimePicker.getCurrentHour());
+        newAlarm.setMinute(alarmTimePicker.getCurrentMinute());
 
-        // Try passing data through intent
-        String resultTimePicker = alarmTimePicker.getCurrentHour().toString();
         Intent resultIntent = new Intent();
-        resultIntent.putExtra("newAlarm", gson.toJson(resultTimePicker));
+        resultIntent.putExtra("newAlarm", gson.toJson(newAlarm));
         setResult(RESULT_OK, resultIntent);
 
         finish();

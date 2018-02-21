@@ -8,13 +8,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
 import com.sams.unbeezy.AddAlarmActivity;
-import com.sams.unbeezy.AddCourseActivity;
 import com.sams.unbeezy.R;
-import com.sams.unbeezy.models.AlarmsItemModel;
-import com.sams.unbeezy.models.AlarmsModel;
+import com.sams.unbeezy.models.AlarmModel;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -25,26 +24,18 @@ import static android.app.Activity.RESULT_OK;
 public class AlarmFragment extends Fragment {
     public static final int NEW_ALARM_REQUEST = 1;
     private static String LOG_TAG = "AlarmFragment";
-    AlarmsModel alarmsData;
+
+    AlarmModel[] alarmsArray;
+    LayoutInflater inflater;
+    LinearLayout alarmListView;
+
     Gson gson = new Gson();
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        // The last two arguments ensure LayoutParams are inflated
-        // properly.
         View rootView = inflater.inflate(
                 R.layout.fragment_alarm, container, false);
 
-        // Create empty alarm model
-
-        if (savedInstanceState != null) {
-            Log.d(LOG_TAG, "Bundle is not null");
-        } else {
-            Log.d(LOG_TAG, "Bundle is null");
-        }
-
-        // Insert alarm items to list of alarms
-        alarmsData = new AlarmsModel();
         FloatingActionButton alarmFAB = rootView.findViewById(R.id.alarm_insert_fab);
         alarmFAB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,6 +44,8 @@ public class AlarmFragment extends Fragment {
                 startActivityForResult(intent, NEW_ALARM_REQUEST);
             }
         });
+        alarmListView = rootView.findViewById(R.id.alarm_list);
+
         return rootView;
     }
 
@@ -60,17 +53,14 @@ public class AlarmFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == NEW_ALARM_REQUEST) {
             if (resultCode == RESULT_OK) {
-                String result = data.getStringExtra(AddAlarmActivity.NEW_ALARM);
-                if (result != null) {
-                    Log.d(LOG_TAG, String.format("Current hour: %s", result));
-                    Log.d(LOG_TAG, "New Alarm Set");
-                } else {
-                    Log.d(LOG_TAG, "Result is null");
-                }
+                String intentString = data.getStringExtra("newAlarm");
+                AlarmModel newAlarm = gson.fromJson(intentString,AlarmModel.class);
+                Log.d(LOG_TAG, String.format("Hour: %d", newAlarm.getHour()));
+                Log.d(LOG_TAG, String.format("Minute: %d", newAlarm.getMinute()));
             }
         }
 
-//        AlarmsItemModel alarm = (AlarmsItemModel) getArguments().getSerializable("newAlarm");
+//        AlarmModel alarm = (AlarmModel) getArguments().getSerializable("newAlarm");
 //        if (alarm != null) {
 //            int h = alarm.getHour();
 //            int m = alarm.getMinute();

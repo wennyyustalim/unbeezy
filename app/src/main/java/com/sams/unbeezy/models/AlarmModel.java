@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by wennyyustalim on 19/02/18.
  */
 
-public class AlarmsItemModel implements Serializable {
+public class AlarmModel implements Serializable {
     private int hour;
     private int minute;
     private boolean isOn = false;
