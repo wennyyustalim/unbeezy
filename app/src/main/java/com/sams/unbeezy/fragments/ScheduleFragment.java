@@ -46,6 +46,7 @@ public class ScheduleFragment extends Fragment {
     CourseModel[] coursesArray;
     LayoutInflater inflater;
     LinearLayout coursesListView;
+    TableLayout tableLayout;
     Gson gson = new Gson();
     int REQUEST_CODE = 1;
     ScheduleFragmentController controller;
@@ -83,7 +84,7 @@ public class ScheduleFragment extends Fragment {
         View rootView = inflater.inflate(
                 R.layout.fragment_schedule, container, false);
         schedulesData = new SchedulesModel();
-        setTable(rootView);
+
         FloatingActionButton scheduleFAB = rootView.findViewById(R.id.schedule_insert_fab);
         scheduleFAB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +95,8 @@ public class ScheduleFragment extends Fragment {
             }
         });
         coursesListView = rootView.findViewById(R.id.courses_list);
+        tableLayout = rootView.findViewById(R.id.table_schedule);
+
         return rootView;
     }
 
@@ -109,10 +112,9 @@ public class ScheduleFragment extends Fragment {
         }
     }
 
-    private void setTable(View view) {
+    private void setTable() {
 
         Context context = getContext();
-        TableLayout tableLayout = view.findViewById(R.id.table_schedule);
 
         for (int i =0; i<11;i++) {
             TableRow tableRow = new TableRow(context);
@@ -126,13 +128,16 @@ public class ScheduleFragment extends Fragment {
             textview.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
             tableRow.addView(textview);
 
-            for(int j=1;j<=7;j++) {
+            for(int j=0;j<5;j++) {
                 TextView textViewColumn = new TextView(context);
                 textViewColumn.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.MATCH_PARENT, 1f));
                 textViewColumn.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                Random random = new Random();
-                textViewColumn.setBackgroundColor(random.nextInt()%256000);
-                textViewColumn.setText(String.format("%d%d", j,i+1));
+                if(schedulesData.getData()[i][j] != null) {
+                    textViewColumn.setBackgroundColor(Color.parseColor(schedulesData.getData()[i][j].getColorHex()));
+                } else {
+                }
+
+//                textViewColumn.setText(String.format("%d%d", j,i+1));
                 textViewColumn.setHeight(80);
                 textViewColumn.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
                 tableRow.addView(textViewColumn);
@@ -255,5 +260,15 @@ public class ScheduleFragment extends Fragment {
 
 
         return inflated;
+    }
+
+    public void updateScheduleTable(SchedulesModel schedulesModel) {
+        this.schedulesData = schedulesModel;
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                setTable();
+            }
+        });
     }
 }

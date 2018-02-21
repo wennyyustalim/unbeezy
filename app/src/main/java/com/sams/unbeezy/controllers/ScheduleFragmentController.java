@@ -1,12 +1,7 @@
 package com.sams.unbeezy.controllers;
 
-import android.app.Activity;
-import android.content.Context;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -19,7 +14,6 @@ import com.sams.unbeezy.models.SchedulesModel;
 import com.sams.unbeezy.services.FirebaseDatabaseService;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -27,8 +21,8 @@ import java.util.List;
  */
 
 public class ScheduleFragmentController {
-    List<CourseModel> dataStore;
-    DatabaseReference databaseReference;
+    List<CourseModel> coursesData;
+    DatabaseReference coursesDataRef;
     ScheduleFragment fragment;
     DatabaseReference scheduleDataRef;
     SchedulesModel schedulesData;
@@ -37,21 +31,22 @@ public class ScheduleFragmentController {
     static String LOG_TAG = "UNBEEZY_COURSES_CONTROLLER";
     public ScheduleFragmentController(ScheduleFragment fragment) {
         this.fragment = fragment;
-        databaseReference = FirebaseDatabaseService.getInstance().child("courses");
+        coursesDataRef = FirebaseDatabaseService.getInstance().child("courses");
         scheduleDataRef = FirebaseDatabaseService.getInstance().child("schedules");
         gson = new Gson();
         updateData();
+        updateScheduleData();
     }
     public void updateData() {
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        coursesDataRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                dataStore = new ArrayList<>();
+                coursesData = new ArrayList<>();
                 if(dataSnapshot.getValue() != null) {
                    for(DataSnapshot item : dataSnapshot.getChildren()) {
-                       dataStore.add(item.getValue(CourseModel.class));
+                       coursesData.add(item.getValue(CourseModel.class));
                    }
-                   fragment.updateLayout(dataStore);
+                   fragment.updateLayout(coursesData);
                 }
 
             }
@@ -63,7 +58,7 @@ public class ScheduleFragmentController {
         });
     }
     public void addData(CourseModel model) {
-        databaseReference.push().setValue(model);
+        coursesDataRef.push().setValue(model);
         updateData();
     }
 
@@ -72,7 +67,13 @@ public class ScheduleFragmentController {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 schedulesData = new SchedulesModel();
-                schedulesData.setData(dataSnapshot.getValue(SchedulesItemModel[][].class));
+                for(DataSnapshot i : dataSnapshot.getChildren()) {
+                    for(DataSnapshot j : i.getChildren()) {
+                        schedulesData.getData()[Integer.parseInt(i.getKey())][Integer.parseInt(j.getKey())] = j.getValue(SchedulesItemModel.class);
+                    }
+
+                }
+                fragment.updateScheduleTable(schedulesData);
             }
 
             @Override
