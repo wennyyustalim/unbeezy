@@ -79,7 +79,7 @@ public class SelectScheduleActivity extends BaseActivity {
                 textViewColumn.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
 
 //                textViewColumn.setBackgroundColor(getResources().getColor(R.color.materialcolorpicker__lightgrey));
-                if(scheduleData.getData()[row][col] == null) {
+                if(scheduleData.getData()[row-1][col-1] == null) {
                     textViewColumn.setBackground(getResources().getDrawable(R.drawable.border_full_light_grey_available));
                     textViewColumn.setOnClickListener(new View.OnClickListener() {
                         @Override

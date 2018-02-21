@@ -115,8 +115,9 @@ public class ScheduleFragment extends Fragment {
     private void setTable() {
 
         Context context = getContext();
-
         for (int i =0; i<11;i++) {
+            if(tableLayout.getChildAt(i+1) != null)
+                tableLayout.removeViewAt(i+1);
             TableRow tableRow = new TableRow(context);
             tableRow.setWeightSum(6);
             TextView textview = new TextView(context);
@@ -143,7 +144,7 @@ public class ScheduleFragment extends Fragment {
                 tableRow.addView(textViewColumn);
                 textview.setPadding(1,1,1,1);
             }
-            tableLayout.addView(tableRow);
+            tableLayout.addView(tableRow,i+1);
         }
 
     }

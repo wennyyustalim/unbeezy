@@ -1,5 +1,6 @@
 package com.sams.unbeezy.controllers;
 
+import android.content.Intent;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
@@ -11,6 +12,7 @@ import com.sams.unbeezy.fragments.ScheduleFragment;
 import com.sams.unbeezy.models.CourseModel;
 import com.sams.unbeezy.models.SchedulesItemModel;
 import com.sams.unbeezy.models.SchedulesModel;
+import com.sams.unbeezy.services.DataSyncService;
 import com.sams.unbeezy.services.FirebaseDatabaseService;
 
 import java.util.ArrayList;
@@ -47,6 +49,9 @@ public class ScheduleFragmentController {
                        coursesData.add(item.getValue(CourseModel.class));
                    }
                    fragment.updateLayout(coursesData);
+                    Intent intent = new Intent(fragment.getContext(), DataSyncService.class);
+                    fragment.getActivity().startService(intent);
+
                 }
 
             }
@@ -60,6 +65,7 @@ public class ScheduleFragmentController {
     public void addData(CourseModel model) {
         coursesDataRef.push().setValue(model);
         updateData();
+
     }
 
     public void updateScheduleData() {
