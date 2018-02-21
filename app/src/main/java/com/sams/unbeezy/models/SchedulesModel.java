@@ -19,4 +19,8 @@ public class SchedulesModel implements Serializable{
         return data;
     }
 
+    public void setData(SchedulesItemModel[][] data) {
+        this.data = data;
+    }
+
 }

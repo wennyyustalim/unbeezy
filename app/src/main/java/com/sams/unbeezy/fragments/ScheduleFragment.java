@@ -1,22 +1,21 @@
 package com.sams.unbeezy.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -24,13 +23,10 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.sams.unbeezy.AddCourseActivity;
 import com.sams.unbeezy.R;
-import com.sams.unbeezy.controllers.CoursesController;
+import com.sams.unbeezy.controllers.ScheduleFragmentController;
 import com.sams.unbeezy.models.CourseModel;
 import com.sams.unbeezy.models.CourseScheduleItemModel;
-import com.sams.unbeezy.models.SchedulesItemModel;
 import com.sams.unbeezy.models.SchedulesModel;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,8 +48,21 @@ public class ScheduleFragment extends Fragment {
     LinearLayout coursesListView;
     Gson gson = new Gson();
     int REQUEST_CODE = 1;
-    CoursesController coursesController;
+    ScheduleFragmentController controller;
     private static String LOG_TAG = "SCHED_FRAGMENT";
+    public static ScheduleFragment _instance;
+    public ScheduleFragment() {
+        controller = new ScheduleFragmentController(this);
+    }
+    public static ScheduleFragment getInstance() {
+        if(_instance == null) {
+            _instance = new ScheduleFragment();
+        }
+
+        return _instance;
+
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,8 +74,7 @@ public class ScheduleFragment extends Fragment {
 //        dumm.setColorHex("#DDAACC");
 //        coursesArray.add(dumm);
 //        Log.d("SchedF", "onCreate Called");
-//        inflater = getActivity().getLayoutInflater();
-//        coursesController = new CoursesController(this);
+//
     }
 
     @Override
@@ -96,7 +104,7 @@ public class ScheduleFragment extends Fragment {
                 String intentString = data.getStringExtra("newCourse");
                 Log.d(LOG_TAG,intentString);
                 CourseModel model = gson.fromJson(intentString,CourseModel.class);
-
+                controller.addData(model);
             }
         }
     }
@@ -165,7 +173,17 @@ public class ScheduleFragment extends Fragment {
 ////        Log.d("SchedF", "onDestroy Called");
 //    }
 
-    private void adaptLinearLayout(LinearLayout layout, CourseModel[] coursesArray) {
+    public void updateLayout(final List<CourseModel> coursesArray) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                adaptLinearLayout(coursesListView, coursesArray);
+            }
+        });
+
+    }
+
+    private void adaptLinearLayout(LinearLayout layout, List<CourseModel> coursesArray) {
         layout.removeAllViews();
         Log.d("NEWADAPTOR",gson.toJson(coursesArray));
          int height  = 0 ;
@@ -180,54 +198,60 @@ public class ScheduleFragment extends Fragment {
 
 
     private View inflateLayout(CourseModel model, ViewGroup parent){
+        LayoutInflater inflater = getActivity().getLayoutInflater();
         View inflated = inflater.inflate(R.layout.component_courses_list_view, parent, false);
-//        TextView courseName =  inflated.findViewById(R.id.course_name);
-//        courseName.setText(String.format("%s %s",model.getCourseId(), model.getCourseName()));
-//        TextView lecturerName = inflated.findViewById(R.id.lecturer_name);
-//        lecturerName.setText(String.format("%s", model.getLecturerName()));
-//        TreeMap<String, List<String> > roomMap = new TreeMap<>();
-//        for(CourseScheduleItemModel item : model.getSchedules()) {
-//            if(roomMap.get(item.getClassRoom()) == null) {
-//                List<String> temp = new ArrayList<>();
-//                temp.add(item.getTime());
-//                roomMap.put(item.getClassRoom(), temp);
-//            } else {
-//                roomMap.get(item.getClassRoom()).add(item.getTime());
-//            }
-//        }
-//        LinearLayout roomContainer = inflated.findViewById(R.id.room_container);
-//        for (Map.Entry<String, List<String>> entry : roomMap.entrySet()) {
-//            boolean first = true;
-//            String room = "";
-//            for(String item : entry.getValue()) {
-//                if(first) {
-//                    room.concat(item);
-//                } else  {
-//                    room.concat(",");
-//                    room.concat(item);
-//                }
-//                TextView textView = new TextView(getContext());
-//                textView.setText(String.format("%s:%s",room,entry.getKey()));
-//                roomContainer.addView(textView);
-//            }
-//
-//        }
-//        ImageButton mailIntent = inflated.findViewById(R.id.mail_button);
-//        if(model.getLecturerEmail() != null &&!model.getLecturerEmail().equals("")) {
-//            final String lecturerMail = model.getLecturerEmail();
-//            mailIntent.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Intent intent = new Intent(Intent.ACTION_SENDTO);
-//                    intent.setType("text/plain");
-//                    intent.putExtra(Intent.EXTRA_EMAIL, lecturerMail);
-//                    intent.setData(Uri.parse(String.format("mailto:%s",lecturerMail)));
-//                    getContext().startActivity(Intent.createChooser(intent, "Send Email"));
-//                }
-//            });
-//        } else {
-//            mailIntent.setVisibility(View.GONE);
-//        }
+        TextView courseName =  inflated.findViewById(R.id.course_name);
+        courseName.setText(String.format("%s %s",model.getCourseId(), model.getCourseName()));
+        TextView lecturerName = inflated.findViewById(R.id.lecturer_name);
+        lecturerName.setText(String.format("%s", model.getLecturerName()));
+        TreeMap<String, List<String> > roomMap = new TreeMap<>();
+        for(CourseScheduleItemModel item : model.getSchedules()) {
+            if(roomMap.get(item.getClassRoom()) == null) {
+                List<String> temp = new ArrayList<>();
+                temp.add(item.getTime());
+                roomMap.put(item.getClassRoom(), temp);
+            } else {
+                roomMap.get(item.getClassRoom()).add(item.getTime());
+            }
+        }
+        LinearLayout roomContainer = inflated.findViewById(R.id.room_container);
+        for (Map.Entry<String, List<String>> entry : roomMap.entrySet()) {
+            boolean first = true;
+            String room = "";
+            for(String item : entry.getValue()) {
+                if(first) {
+                    room = room.concat(item);
+                    first = false;
+                } else  {
+                    room = room.concat(",");
+                    room = room.concat(item);
+                }
+
+            }
+            TextView textView = new TextView(getContext());
+            textView.setText(String.format("%s:%s",room,entry.getKey()));
+            roomContainer.addView(textView);
+
+        }
+        ImageButton mailIntent = inflated.findViewById(R.id.mail_button);
+        if(model.getLecturerEmail() != null && !model.getLecturerEmail().equals("")) {
+            final String lecturerMail = model.getLecturerEmail();
+            mailIntent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(Intent.ACTION_SENDTO);
+                    intent.setType("text/plain");
+                    intent.putExtra(Intent.EXTRA_EMAIL, lecturerMail);
+                    intent.setData(Uri.parse(String.format("mailto:%s",lecturerMail)));
+                    getContext().startActivity(Intent.createChooser(intent, "Send Email"));
+                }
+            });
+        } else {
+            mailIntent.setVisibility(View.GONE);
+        }
+
+        View colorFlag = inflated.findViewById(R.id.color_flag);
+        colorFlag.setBackgroundColor(Color.parseColor(model.getColorHex()));
 
 
         return inflated;

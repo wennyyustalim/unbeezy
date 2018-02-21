@@ -1,6 +1,7 @@
 package com.sams.unbeezy.models;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by kennethhalim on 2/14/18.
@@ -10,7 +11,7 @@ public class CourseModel implements Serializable {
     private String course_id;
     private String course_name;
     private String color_hex;
-    private CourseScheduleItemModel schedules[];
+    private List<CourseScheduleItemModel> schedules;
     private String lecturer_name;
     private String lecturer_email;
     private String lecturer_phone;
@@ -36,7 +37,7 @@ public class CourseModel implements Serializable {
         return lecturer_phone;
     }
 
-    public CourseScheduleItemModel[] getSchedules() {
+    public List<CourseScheduleItemModel> getSchedules() {
         return schedules;
     }
 
@@ -52,7 +53,7 @@ public class CourseModel implements Serializable {
         this.color_hex = color_hex;
     }
 
-    public void setSchedules(CourseScheduleItemModel[] schedules) {
+    public void setSchedules(List<CourseScheduleItemModel> schedules) {
         this.schedules = schedules;
     }
 

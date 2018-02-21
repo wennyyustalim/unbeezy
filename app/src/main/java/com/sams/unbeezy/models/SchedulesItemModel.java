@@ -9,13 +9,9 @@ import java.io.Serializable;
 public class SchedulesItemModel implements Serializable {
     private String course_key;
     private String color_hex;
-    private String class_room;
 
     public String getCourseKey() {
         return course_key;
-    }
-    public String getClassRoom() {
-        return class_room;
     }
     public String getColorHex() {
         return color_hex;
@@ -29,7 +25,5 @@ public class SchedulesItemModel implements Serializable {
         this.color_hex = color_hex;
     }
 
-    public void setClassRoom(String class_room) {
-        this.class_room = class_room;
-    }
+
 }

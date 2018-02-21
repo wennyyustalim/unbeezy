@@ -16,6 +16,8 @@ import com.pes.androidmaterialcolorpickerdialog.ColorPickerCallback;
 import com.sams.unbeezy.models.CourseModel;
 import com.sams.unbeezy.models.CourseScheduleItemModel;
 
+import java.util.Arrays;
+
 public class AddCourseActivity extends BaseActivity {
     String ACTIVITY_TITLE ="Add New Schedule";
     String NO_VALUE_ERROR = "No Value";
@@ -87,7 +89,7 @@ public class AddCourseActivity extends BaseActivity {
                     cancelIcon.setVisibility(View.VISIBLE);
                     checkedIcon.setVisibility(View.GONE);
                 } else {
-                    model.setSchedules(scheduleItemModel);
+                    model.setSchedules(Arrays.asList(scheduleItemModel));
                     cancelIcon.setVisibility(View.GONE);
                     checkedIcon.setVisibility(View.VISIBLE);
                 }
@@ -145,7 +147,7 @@ public class AddCourseActivity extends BaseActivity {
 
     boolean checkLecturerEmail() {
         EditText lecturerEmail = findViewById(R.id.lecturer_email);
-        if(lecturerEmail.getText() == null) {
+        if(lecturerEmail.getText() != null) {
             model.setLecturerEmail(lecturerEmail.getText().toString());
             return true;
         } else {
@@ -155,7 +157,7 @@ public class AddCourseActivity extends BaseActivity {
 
     boolean checkLecturerPhone() {
         EditText lecturerPhone = findViewById(R.id.lecturer_phone);
-        if(lecturerPhone.getText() == null) {
+        if(lecturerPhone.getText() != null) {
             model.setLecturerPhone(lecturerPhone.getText().toString());
             return true;
         } else {
@@ -164,7 +166,7 @@ public class AddCourseActivity extends BaseActivity {
     }
 
     boolean checkCourseSchedule() {
-        if(model.getSchedules() != null && model.getSchedules().length != 0) {
+        if(model.getSchedules() != null && model.getSchedules().size() != 0) {
             cancelIcon.setVisibility(View.GONE);
             checkedIcon.setVisibility(View.VISIBLE);
             return true;
