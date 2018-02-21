@@ -52,9 +52,9 @@
             android:layout_below="@+id/alarm_time_picker"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="4dp"
-            android:onClick="onToggleClicked"
             android:text="Alarm On/Off"
             android:textColorLink="@color/colorPrimary"
+            android:onClick="onToggleClicked"
             app:layout_constraintTop_toBottomOf="@+id/alarm_time_picker"
             tools:layout_editor_absoluteX="148dp" />
 
