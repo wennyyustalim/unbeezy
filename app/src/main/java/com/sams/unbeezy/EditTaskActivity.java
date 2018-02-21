@@ -12,6 +12,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.sams.unbeezy.models.TaskModel;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -21,6 +23,7 @@ public class EditTaskActivity extends BaseActivity {
     private TextView date_picker;
     private TextView time_picker;
     private Button save_button;
+    TaskModel model;
 
     String ACTIVITY_TITLE = "Edit Task";
     DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
@@ -47,6 +50,7 @@ public class EditTaskActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_task);
         setToolbar(ACTIVITY_TITLE);
+        model = new TaskModel();
         date_picker = (TextView) findViewById(R.id.date_picker);
         time_picker = (TextView) findViewById(R.id.time_picker);
         save_button = (Button) findViewById(R.id.save_button);
@@ -102,13 +106,17 @@ public class EditTaskActivity extends BaseActivity {
         String date = date_picker.getText().toString();
         String time = time_picker.getText().toString();
 
+        model.setTitle(taskTitle);
+        model.setDate(date);
+        model.setTime(time);
+
         return (!taskTitle.isEmpty() && !date.isEmpty() && !time.isEmpty());
     }
 
     private void saveTask() {
         if (isFormFilled()) {
             Intent resultIntent = new Intent();
-            resultIntent.putExtra("editedTask", "aaa");
+            resultIntent.putExtra("editedTask", gson.toJson(model));
             setResult(RESULT_OK, resultIntent);
             finish();
         } else {
