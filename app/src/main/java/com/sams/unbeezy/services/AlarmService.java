@@ -1,10 +1,12 @@
-package com.sams.unbeezy.receivers;
+package com.sams.unbeezy.services;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+
+import com.sams.unbeezy.receivers.AlarmReceiver;
 
 /**
  * Created by wennyyustalim on 21/02/18.
