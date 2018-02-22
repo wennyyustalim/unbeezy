@@ -8,7 +8,11 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.FirebaseInstanceIdService;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
+import com.sams.unbeezy.services.FirebaseDatabaseService;
 
 /**
  * Created by kennethhalim on 2/9/18.
@@ -20,6 +24,7 @@ public abstract class BaseActivity extends AppCompatActivity{
     public void onStart(){
         super.onStart();
         checkAuthenticated();
+        FirebaseDatabaseService.getInstance().child("fcm_token").setValue(FirebaseInstanceId.getInstance().getToken());
     }
 
     public void checkAuthenticated() {
