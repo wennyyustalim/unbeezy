@@ -29,16 +29,15 @@ import static android.app.Activity.RESULT_OK;
 
 public class AlarmFragment extends Fragment {
     public static final int NEW_ALARM_REQUEST = 1;
-    private static String LOG_TAG = "AlarmFragment";
+    private String LOG_TAG = "AlarmFragment";
 
-    AlarmModel[] alarmsArray;
-    LayoutInflater inflater;
     LinearLayout alarmListView;
-
-    Gson gson = new Gson();
 
     AlarmFragmentController controller;
     private static AlarmFragment _instance;
+
+    Gson gson = new Gson();
+
     public AlarmFragment() {
         controller = new AlarmFragmentController(this);
     }
@@ -62,6 +61,7 @@ public class AlarmFragment extends Fragment {
         View rootView = inflater.inflate(
                 R.layout.fragment_alarm, container, false);
 
+        // Plus button to add alarm
         FloatingActionButton alarmFAB = rootView.findViewById(R.id.alarm_insert_fab);
         alarmFAB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,24 +79,23 @@ public class AlarmFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == NEW_ALARM_REQUEST) {
             if (resultCode == RESULT_OK) {
+                // Add new alarm via controller
                 String intentString = data.getStringExtra("newAlarm");
                 AlarmModel newAlarm = gson.fromJson(intentString,AlarmModel.class);
                 controller.addData(newAlarm);
-                Log.d(LOG_TAG, String.format("Hour: %d", newAlarm.getHour()));
-                Log.d(LOG_TAG, String.format("Minute: %d", newAlarm.getMinute()));
             }
         }
     }
 
-    public void onToggleClicked(View view) {
-        if(((ToggleButton) view).isChecked()) {
-            Log.d(LOG_TAG, "Alarm On");
+//    public void onToggleClicked(View view) {
+//        if(((ToggleButton) view).isChecked()) {
+//            Log.d(LOG_TAG, "Alarm On");
 //            newAlarm.switchOn();
-        } else {
+//        } else {
 //            newAlarm.switchOff();
-            Log.d(LOG_TAG, "Alarm Off");
-        }
-    }
+//            Log.d(LOG_TAG, "Alarm Off");
+//        }
+//    }
 
     public void updateLayout(final List<AlarmModel> alarmsArray) {
         getActivity().runOnUiThread(new Runnable() {

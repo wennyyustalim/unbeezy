@@ -50,6 +50,7 @@ public class AlarmFragmentController {
                 }
             }
 
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
