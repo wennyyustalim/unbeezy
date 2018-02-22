@@ -27,7 +27,7 @@ public class ShakeItOffDismisserService extends PanicDismisserService implements
 
 
     public ShakeItOffDismisserService() {
-        super("ShakeItOffDisimisserService");
+        super("ShakeItOffDisimisserService", "Shake It Off!", "Shake your phone");
     }
 
     @Override

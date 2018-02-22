@@ -13,8 +13,13 @@ import android.content.Context;
  */
 public abstract class PanicDismisserService extends IntentService {
     public static String ACTION = "DismissAlarm!";
-    public PanicDismisserService(String name) {
+    public static String title;
+    public static String _description;
+    String description;
+    public PanicDismisserService(String name, String title, String description) {
         super(name);
+        this.title = title;
+        this._description = description;
     }
 
     public void dismiss() {
@@ -22,5 +27,11 @@ public abstract class PanicDismisserService extends IntentService {
         intent.setAction(ACTION);
         sendBroadcast(intent);
         stopSelf();
+    }
+    public static String getTitle() {
+        return title;
+    }
+    public static String getDescription() {
+        return _description;
     }
 }
