@@ -1,10 +1,12 @@
 package com.sams.unbeezy;
 
 import android.content.Intent;
+import android.os.PersistableBundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -14,6 +16,7 @@ public class MainActivity extends BaseActivity {
 
     MainActivityFragmentsAdapter mainActivityFragmentsAdapter;
     ViewPager viewPager;
+    String SAVE_INSTANCE_STATE_KEY = "MainActivityFragmentConfig";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,10 +24,23 @@ public class MainActivity extends BaseActivity {
         mainActivityFragmentsAdapter = new MainActivityFragmentsAdapter(getSupportFragmentManager());
         viewPager = (ViewPager) findViewById(R.id.main_view_pager);
         viewPager.setAdapter(mainActivityFragmentsAdapter);
+        if(savedInstanceState != null ) {
+            position = savedInstanceState.getInt(SAVE_INSTANCE_STATE_KEY);
+            viewPager.setCurrentItem(position);
+        }
         final TabLayout tabLayout = (TabLayout) findViewById(R.id.main_tab_layout);
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setOffscreenPageLimit(4);
         setTabIcons(tabLayout);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState) {
+        super.onRestoreInstanceState(savedInstanceState, persistentState);
+        if(savedInstanceState != null ) {
+            int position = savedInstanceState.getInt(SAVE_INSTANCE_STATE_KEY);
+            viewPager.setCurrentItem(position);
+        }
     }
 
     @Override
@@ -70,6 +86,12 @@ public class MainActivity extends BaseActivity {
         for(int i = 0; i < icons.length; i++) {
           tabLayout.getTabAt(i).setIcon(icons[i]);
         }
+    }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d("MAIN ACTIVITY", "Saving instance state");
+        outState.putInt(SAVE_INSTANCE_STATE_KEY, viewPager.getCurrentItem());
     }
 
     @Override
