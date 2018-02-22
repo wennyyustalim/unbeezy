@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.sams.unbeezy.PanicAttackActivity;
 import com.sams.unbeezy.R;
@@ -31,6 +33,10 @@ public class UserFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         pref = this.getActivity().getSharedPreferences("UnbeezyPref", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        // Set default alarm dismisser to shake it off mode
+        editor.putInt("dismisserMode", 1);
+        editor.apply();
     }
 
     @Override
@@ -47,6 +53,24 @@ public class UserFragment extends Fragment {
                 Intent intent = new Intent(getContext(), PanicAttackActivity.class);
                 intent.putExtra(DismisserServicesList.DISMISSER_CLASS_INTENT_CODE, DismisserServicesList.SHAKE_IT_OFF_CODE);
                 startActivity(intent);
+            }
+        });
+
+        final ToggleButton dismisserToggleButton = rootView.findViewById(R.id.dismisser_toggle);
+        dismisserToggleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String toastMessage;
+                SharedPreferences.Editor editor = pref.edit();
+                if(dismisserToggleButton.isChecked()) {
+                    toastMessage = "Rise and Shine Mode";
+                    editor.putInt("dismisserMode", 0);
+                } else {
+                    toastMessage = "Shake It Off Mode";
+                    editor.putInt("dismisserMode", 1);
+                }
+                editor.apply();
+                Toast.makeText(getContext(), toastMessage, Toast.LENGTH_SHORT).show();
             }
         });
         personName = (TextView) rootView.findViewById(R.id.person_name);

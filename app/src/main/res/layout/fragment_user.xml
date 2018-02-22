@@ -27,4 +27,19 @@
         app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ToggleButton
+        android:id="@+id/dismisser_toggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/panicAttack"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="4dp"
+        android:text="Dismisser"
+        android:textColorLink="@color/colorPrimary"
+        android:textOff="Shake It Off"
+        android:textOn="Rise and Shine"
+        android:onClick="onToggleClicked"
+        app:layout_constraintTop_toBottomOf="@+id/panicAttack"
+        tools:layout_editor_absoluteX="148dp" />
 </android.support.constraint.ConstraintLayout>
