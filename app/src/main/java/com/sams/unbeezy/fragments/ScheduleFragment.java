@@ -67,6 +67,7 @@ public class ScheduleFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
 //        CourseModel dumm = new CourseModel();
 //        dumm.setCourseId("IF2250");
 //        dumm.setCourseName("DASAR REKAYASA");
