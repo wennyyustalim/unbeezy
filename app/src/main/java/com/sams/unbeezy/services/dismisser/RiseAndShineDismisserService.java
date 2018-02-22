@@ -24,7 +24,7 @@ public class RiseAndShineDismisserService extends PanicDismisserService implemen
     private float THRESHOLD = 40;
 
     RiseAndShineDismisserService() {
-        super("RiseAndShineService");
+        super("RiseAndShineService", "Rise and Shine!", "Turn on yout light! ");
     }
 
     @Override

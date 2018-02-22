@@ -54,12 +54,12 @@ public class ScheduleFragment extends Fragment {
     public static ScheduleFragment _instance;
     public ScheduleFragment() {
         controller = new ScheduleFragmentController(this);
+        schedulesData = new SchedulesModel();
     }
     public static ScheduleFragment getInstance() {
         if(_instance == null) {
             _instance = new ScheduleFragment();
         }
-
         return _instance;
 
     }
@@ -76,7 +76,7 @@ public class ScheduleFragment extends Fragment {
 //        dumm.setColorHex("#DDAACC");
 //        coursesArray.add(dumm);
 //        Log.d("SchedF", "onCreate Called");
-//
+
     }
 
     @Override
@@ -85,7 +85,8 @@ public class ScheduleFragment extends Fragment {
         View rootView = inflater.inflate(
                 R.layout.fragment_schedule, container, false);
         schedulesData = new SchedulesModel();
-
+        controller.updateScheduleData();
+        controller.updateData();
         FloatingActionButton scheduleFAB = rootView.findViewById(R.id.schedule_insert_fab);
         scheduleFAB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,7 +98,6 @@ public class ScheduleFragment extends Fragment {
         });
         coursesListView = rootView.findViewById(R.id.courses_list);
         tableLayout = rootView.findViewById(R.id.table_schedule);
-
         return rootView;
     }
 

@@ -11,6 +11,7 @@ import android.widget.Button;
 
 import com.sams.unbeezy.PanicAttackActivity;
 import com.sams.unbeezy.R;
+import com.sams.unbeezy.lists.DismisserServicesList;
 
 /**
  * Created by kennethhalim on 2/12/18.
@@ -36,6 +37,7 @@ public class UserFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), PanicAttackActivity.class);
+                intent.putExtra(DismisserServicesList.DISMISSER_CLASS_INTENT_CODE, DismisserServicesList.SHAKE_IT_OFF_CODE);
                 startActivity(intent);
             }
         });
