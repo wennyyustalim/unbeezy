@@ -7,12 +7,11 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/person_name"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="User Fragment"
-        tools:layout_editor_absoluteX="148dp"
-        tools:layout_editor_absoluteY="111dp" />
+        android:layout_height="19dp"
+        tools:layout_editor_absoluteX="192dp"
+        tools:layout_editor_absoluteY="192dp" />
 
     <Button
         android:id="@+id/panicAttack"
