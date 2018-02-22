@@ -17,7 +17,6 @@
         android:background="@drawable/ic_circle_primary_dark"
         android:gravity="center"
         android:padding="8dp"
-        android:text="KK"
         android:textColor="@android:color/white"
         android:textSize="48sp"
         app:layout_constraintBottom_toBottomOf="parent"
