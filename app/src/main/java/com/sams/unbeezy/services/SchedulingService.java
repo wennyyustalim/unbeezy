@@ -1,6 +1,8 @@
 package com.sams.unbeezy.services;
 
+import android.app.AlarmManager;
 import android.app.IntentService;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
@@ -12,9 +14,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
+import com.sams.unbeezy.AddAlarmActivity;
+import com.sams.unbeezy.PanicAttackActivity;
 import com.sams.unbeezy.models.AlarmModel;
+import com.sams.unbeezy.receivers.AlarmReceiver;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class SchedulingService extends IntentService {
@@ -22,14 +28,16 @@ public class SchedulingService extends IntentService {
 
     List<AlarmModel> dataStore;
     DatabaseReference databaseReference;
-
     Gson gson;
+    PendingIntent pendingIntent;
+    AlarmManager alarmManager;
 
     public SchedulingService() {
         super("SchedulingService");
         databaseReference = FirebaseDatabaseService.getInstance().child("alarms");
         gson = new Gson();
         getData();
+        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
     }
 
     @Override
@@ -58,7 +66,24 @@ public class SchedulingService extends IntentService {
                         dataStore.add(item.getValue(AlarmModel.class));
                     }
                     for (AlarmModel item : dataStore) {
-                        Log.d(LOG_TAG, String.format("Hour: %d, Minute: %d", item.getHour(), item.getMinute()));
+                        String status;
+                        if (item.isOn()) {
+                            status = "ON";
+
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.setTimeInMillis(System.currentTimeMillis());
+                            calendar.set(Calendar.HOUR_OF_DAY, item.getHour());
+                            calendar.set(Calendar.MINUTE, item.getMinute());
+                            calendar.set(Calendar.SECOND, 0);
+
+                            Intent intent = new Intent(getBaseContext(), AlarmReceiver.class);
+                            pendingIntent = PendingIntent.getBroadcast(getBaseContext(), 0, intent, 0);
+                            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+
+                        } else {
+                            status = "OFF";
+                        }
+                        Log.d(LOG_TAG, String.format("Hour: %d, Minute: %d, Status: %s", item.getHour(), item.getMinute(), status));
                     }
                 }
             }

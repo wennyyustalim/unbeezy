@@ -9,14 +9,14 @@ import java.io.Serializable;
 public class AlarmModel implements Serializable {
     private int hour;
     private int minute;
-    private boolean isOn = false;
+    private Boolean on  = Boolean.FALSE;
 
     public int getHour() { return hour; }
     public int getMinute() { return minute; }
-    public boolean isOn() { return isOn; }
+    public Boolean isOn() { return on; }
 
     public void setHour(int hour) { this.hour = hour; }
     public void setMinute(int minute) { this.minute = minute; }
-    public void switchOn() { this.isOn = true; }
-    public void switchOff() { this.isOn = false; }
+    public void switchOn() { this.on = Boolean.TRUE; }
+    public void switchOff() { this.on = Boolean.FALSE; }
 }
