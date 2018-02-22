@@ -44,10 +44,6 @@ public class AddAlarmActivity extends BaseActivity {
         ToggleButton alarmToggle = (ToggleButton) findViewById(R.id.alarm_toggle);
         mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-
-        Intent notifyIntent = new Intent(this, AlarmReceiver.class);
-        boolean  alarmUp = (PendingIntent.getBroadcast(this, 0, notifyIntent, PendingIntent.FLAG_NO_CREATE) != null);
-        alarmToggle.setChecked(alarmUp);
     }
 
     public void onToggleClicked(View view) {

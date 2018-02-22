@@ -91,16 +91,8 @@ public class AlarmFragment extends Fragment {
         if(((ToggleButton) view).isChecked()) {
             Log.d(LOG_TAG, "Alarm On");
 //            newAlarm.switchOn();
-//            Calendar calendar = Calendar.getInstance();
-//            calendar.set(Calendar.HOUR_OF_DAY, alarmTimePicker.getCurrentHour());
-//            calendar.set(Calendar.MINUTE, alarmTimePicker.getCurrentMinute());
-//            Intent myIntent = new Intent(AddAlarmActivity.this, AlarmReceiver.class);
-//            pendingIntent = PendingIntent.getBroadcast(AddAlarmActivity.this, 0, myIntent, 0);
-//            alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
         } else {
 //            newAlarm.switchOff();
-//            alarmManager.cancel(pendingIntent);
-//            setAlarmText("");
             Log.d(LOG_TAG, "Alarm Off");
         }
     }

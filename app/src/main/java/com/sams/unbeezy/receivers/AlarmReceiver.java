@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.sams.unbeezy.R;
 import com.sams.unbeezy.fragments.AlarmFragment;
+import com.sams.unbeezy.services.SchedulingService;
 
 /**
  * Created by wennyyustalim on 19/02/18.
@@ -38,6 +39,10 @@ public class AlarmReceiver extends BroadcastReceiver {
                 .setDefaults(NotificationCompat.DEFAULT_ALL);
 
         notificationManager.notify(NOTIFICATION_ID, builder.build());
+
+        Intent schedulingIntent = new Intent(context, SchedulingService.class);
+        context.startService(schedulingIntent);
+
         Log.d("AlarmReceiver", "Notification built");
     }
 }
