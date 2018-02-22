@@ -21,10 +21,10 @@ public class RiseAndShineDismisserService extends PanicDismisserService implemen
     private Sensor mLight;
 
     private String LOG_TAG = "RASD_Service";
-    private float THRESHOLD = 40;
+    private float THRESHOLD = 30;
 
     RiseAndShineDismisserService() {
-        super("RiseAndShineService", "Rise and Shine!", "Turn on yout light! ");
+        super("RiseAndShineService", "Rise and Shine!", "Turn on your light! ");
     }
 
     @Override

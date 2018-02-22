@@ -20,6 +20,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.sams.unbeezy.services.SchedulingService;
 
 public class LoginActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 9001;
@@ -48,6 +49,10 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }
         );
+
+
+        Intent intent = new Intent(this, SchedulingService.class);
+        startService(intent);
 
     }
     @Override

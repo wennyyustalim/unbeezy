@@ -28,6 +28,9 @@ public class PanicAttackActivity extends BaseActivity {
         mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.alarm);
         mediaPlayer.setLooping(true);
         dismisserCode = getIntent().getStringExtra(DismisserServicesList.DISMISSER_CLASS_INTENT_CODE);
+        if(dismisserCode == null) {
+            dismisserCode = "DEFAULT";
+        }
         dismisser = DismisserServicesList.getDismisserClass(dismisserCode);
         TextView titleView = findViewById(R.id.title_view);
         TextView descriptionView = findViewById(R.id.description_view);

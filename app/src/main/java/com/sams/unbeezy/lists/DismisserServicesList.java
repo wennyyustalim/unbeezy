@@ -27,6 +27,7 @@ public class DismisserServicesList {
                     SHAKE_IT_OFF.newInstance();
                     return SHAKE_IT_OFF;
                 default:
+                    SHAKE_IT_OFF.newInstance();
                     return SHAKE_IT_OFF;
             }
         } catch (Exception e) {

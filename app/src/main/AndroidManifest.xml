@@ -78,7 +78,6 @@
             android:exported="true" />
         <service android:name=".services.UnbeezyFirebaseMessagingService" />
         <service android:name=".services.UnbeezyFirebaseInstanceIDService" />
-
     </application>
 
 </manifest>
