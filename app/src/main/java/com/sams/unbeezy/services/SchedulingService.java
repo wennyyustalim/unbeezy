@@ -29,15 +29,15 @@ public class SchedulingService extends IntentService {
     List<AlarmModel> dataStore;
     DatabaseReference databaseReference;
     Gson gson;
-    PendingIntent pendingIntent;
-    AlarmManager alarmManager;
+//    PendingIntent pendingIntentIntent;
+//    AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
     public SchedulingService() {
         super("SchedulingService");
         databaseReference = FirebaseDatabaseService.getInstance().child("alarms");
         gson = new Gson();
         getData();
-        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
     }
 
     @Override
@@ -69,16 +69,16 @@ public class SchedulingService extends IntentService {
                         String status;
                         if (item.isOn()) {
                             status = "ON";
-
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.setTimeInMillis(System.currentTimeMillis());
-                            calendar.set(Calendar.HOUR_OF_DAY, item.getHour());
-                            calendar.set(Calendar.MINUTE, item.getMinute());
-                            calendar.set(Calendar.SECOND, 0);
-
-                            Intent intent = new Intent(getBaseContext(), AlarmReceiver.class);
-                            pendingIntent = PendingIntent.getBroadcast(getBaseContext(), 0, intent, 0);
-                            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+//
+//                            Calendar calendar = Calendar.getInstance();
+//                            calendar.setTimeInMillis(System.currentTimeMillis());
+//                            calendar.set(Calendar.HOUR_OF_DAY, item.getHour());
+//                            calendar.set(Calendar.MINUTE, item.getMinute());
+//                            calendar.set(Calendar.SECOND, 0);
+//
+//                            Intent intent = new Intent(getBaseContext(), AlarmReceiver.class);
+//                            pendingIntent = PendingIntent.getBroadcast(getBaseContext(), 0, intent, 0);
+//                            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
 
                         } else {
                             status = "OFF";
