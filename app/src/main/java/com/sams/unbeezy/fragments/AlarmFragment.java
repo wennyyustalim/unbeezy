@@ -96,16 +96,6 @@ public class AlarmFragment extends Fragment {
         }
     }
 
-//    public void onToggleClicked(View view) {
-//        if(((ToggleButton) view).isChecked()) {
-//            Log.d(LOG_TAG, "Alarm On");
-//            newAlarm.switchOn();
-//        } else {
-//            newAlarm.switchOff();
-//            Log.d(LOG_TAG, "Alarm Off");
-//        }
-//    }
-
     public void updateLayout(final Map<String,AlarmModel> alarmsArray) {
         getActivity().runOnUiThread(new Runnable() {
             @Override
@@ -117,7 +107,7 @@ public class AlarmFragment extends Fragment {
 
     private void adaptLinearLayout(LinearLayout layout, Map<String,AlarmModel> alarmsArray) {
         layout.removeAllViews();
-        Log.d("NEWADAPTOR", gson.toJson(alarmsArray));
+        Log.d(LOG_TAG, gson.toJson(alarmsArray));
         int height = 0;
         for (Map.Entry<String, AlarmModel> item : alarmsArray.entrySet()) {
             View inflated = inflateLayout(item.getKey(),item.getValue(), layout);

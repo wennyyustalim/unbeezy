@@ -41,7 +41,6 @@ public class AddAlarmActivity extends BaseActivity {
         alarmTimePicker = (TimePicker) findViewById(R.id.alarm_time_picker);
         alarmTextView = (TextView) findViewById(R.id.alarm_text);
 
-        ToggleButton alarmToggle = (ToggleButton) findViewById(R.id.alarm_toggle);
         mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
     }
