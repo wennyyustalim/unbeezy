@@ -1,13 +1,17 @@
 package com.sams.unbeezy.adapters;
 
+import android.app.FragmentController;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.ArrayMap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.sams.unbeezy.R;
+import com.sams.unbeezy.controllers.TaskFragmentController;
+import com.sams.unbeezy.fragments.TaskFragment;
 import com.sams.unbeezy.models.TaskModel;
 
 import java.text.ParseException;
@@ -15,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * Created by Richard on 21-Feb-18.
@@ -22,13 +27,14 @@ import java.util.Locale;
 
 public class TaskItemAdapter extends RecyclerView.Adapter<TaskItemAdapter.TaskViewHolder> {
     private LayoutInflater mInflater;
-    private ArrayList<TaskModel> models;
+    private ArrayMap<String, TaskModel> models;
     private Calendar today = Calendar.getInstance();
     private Calendar taskDate = Calendar.getInstance();
-
-    public TaskItemAdapter(Context context, ArrayList<TaskModel> models) {
+    private TaskFragmentController controller;
+    public TaskItemAdapter(Context context, ArrayMap<String, TaskModel> models, TaskFragmentController controller) {
         mInflater = LayoutInflater.from(context);
         this.models = models;
+        this.controller = controller;
     }
 
     @Override
@@ -39,11 +45,18 @@ public class TaskItemAdapter extends RecyclerView.Adapter<TaskItemAdapter.TaskVi
 
     @Override
     public void onBindViewHolder(TaskItemAdapter.TaskViewHolder holder, int position) {
-        TaskModel model = models.get(position);
+        final TaskModel model = models.valueAt(position);
+        final int constpost = position;
+        holder.parentView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                controller.deleteData(models.keyAt(constpost));
+                return true;
+            }
+        });
         holder.taskTitle.setText(model.getTitle());
         holder.date.setText(model.getDate());
         holder.time.setText(model.getTime());
-
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.US);
         try {
             taskDate.setTime(sdf.parse(model.getDate() + " " + model.getTime()));
@@ -61,6 +74,7 @@ public class TaskItemAdapter extends RecyclerView.Adapter<TaskItemAdapter.TaskVi
     }
 
     public class TaskViewHolder extends RecyclerView.ViewHolder {
+        public View parentView;
         final TextView taskTitle;
         final TextView date;
         final TextView time;
@@ -69,6 +83,7 @@ public class TaskItemAdapter extends RecyclerView.Adapter<TaskItemAdapter.TaskVi
 
         TaskViewHolder(View itemView, TaskItemAdapter adapter) {
             super(itemView);
+            parentView = itemView;
             taskTitle = (TextView) itemView.findViewById(R.id.task_title);
             date = (TextView) itemView.findViewById(R.id.task_date);
             time = (TextView) itemView.findViewById(R.id.task_time);
