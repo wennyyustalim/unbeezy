@@ -16,11 +16,15 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.google.gson.reflect.TypeToken;
 import com.sams.unbeezy.models.CourseScheduleItemModel;
+import com.sams.unbeezy.models.SchedulesItemModel;
 import com.sams.unbeezy.models.SchedulesModel;
 
 import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -196,7 +200,10 @@ public class SelectScheduleActivity extends BaseActivity {
     private void saveResult() {
         if(checkAllFilled()) {
             Intent intent = new Intent();
-            intent.putExtra("scheduleList", gson.toJson(scheduleDataMap.values()));
+            Collection<CourseScheduleItemModel> scheduleCollection = scheduleDataMap.values();
+            Type itemType = new TypeToken<Collection<CourseScheduleItemModel>>(){}.getType();
+            String intentString = gson.toJson(scheduleCollection,itemType);
+            intent.putExtra("scheduleList", intentString);
             setResult(RESULT_OK, intent);
             finish();
         }
