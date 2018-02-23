@@ -20,7 +20,10 @@ public class LocationService extends IntentService {
     }
 
     public static final String BROADCAST_ACTION = "Hello World";
+    public static final String LOG_TAG = "LocationService";
     private static final int TWO_MINUTES = 1000 * 60 * 2;
+    final double ITB_LATITUDE = -6.891422;
+    final double ITB_LONGITUDE = 107.610667;
     public LocationManager locationManager;
     public MyLocationListener listener;
     public Location previousBestLocation = null;
@@ -39,15 +42,20 @@ public class LocationService extends IntentService {
     public void onStart(Intent intent, int startId)
     {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        listener = new MyLocationListener();
-        try {
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 4000, 0, listener);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 4000, 0, listener);
-        } catch (SecurityException e) {
-            e.printStackTrace();
-            Intent intent2 = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent2);
+        if(previousBestLocation ==null) {
+            listener = new MyLocationListener();
+            try {
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 4000, 0, listener);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 4000, 0, listener);
+            } catch (SecurityException e) {
+                e.printStackTrace();
+                Intent intent2 = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent2);
+            }
+        }else {
+            broadcastIntent();
         }
+
     }
 
     @Override
@@ -135,28 +143,62 @@ public class LocationService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        Log.d(LOG_TAG, "Intent Received");
         if (intent != null) {
-//            final String action = intent.getAction();
+            Log.d(LOG_TAG, "Intent Received");
             if(previousBestLocation != null) {
-                Intent intent1 = new Intent(getApplicationContext(), AlarmReceiver.class);
-                intent1.setAction(AlarmReceiver.LOCATION_RECEIVED_ACTION);
+                broadcastIntent();
             }
         }
     }
 
+    public void broadcastIntent()  {
+        Log.d(LOG_TAG, "Broadcasing intent");
+        Intent intent1 = new Intent(getApplicationContext(), AlarmReceiver.class);
+        if(isOutsideRange()) {
+            intent1.setAction(AlarmReceiver.LOCATION_RECEIVED_ACTION_OUTSIDE_RANGE);
+        } else {
+            intent1.setAction(AlarmReceiver.LOCATION_RECEIVED_ACTION_INSIDE_RANGE);
+        }
+        sendBroadcast(intent1);
+        stopSelf();
+
+    }
+    public Location getITBLoc() {
+        Location ITBLocation = new Location("ITB");
+        ITBLocation.setLatitude(ITB_LATITUDE);
+        ITBLocation.setLongitude(ITB_LONGITUDE);
+        return ITBLocation;
+    }
+
+    public double distanceBetween(Location a, Location b) {
+        return a.distanceTo(b);
+    }
+
+    public Boolean isOutsideRange() {
+        double distance = distanceBetween(getITBLoc(), previousBestLocation);
+        if (distance > 600) {
+            Log.d(LOG_TAG, String.format("You're outside ITB"));
+            return Boolean.TRUE;
+        }
+        Log.d(LOG_TAG, String.format("You're inside ITB"));
+        return Boolean.FALSE;
+    }
 
     public class MyLocationListener implements LocationListener
     {
 
         public void onLocationChanged(final Location loc)
         {
-            Log.i("*************", "Location changed");
+            Log.i("LocationListener", "Location changed");
             if(isBetterLocation(loc, previousBestLocation)) {
                 loc.getLatitude();
                 loc.getLongitude();
-
+                previousBestLocation = loc;
+                broadcastIntent();
             }
         }
+
 
         public void onProviderDisabled(String provider)
         {

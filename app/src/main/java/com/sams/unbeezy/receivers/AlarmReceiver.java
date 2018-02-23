@@ -1,48 +1,31 @@
 package com.sams.unbeezy.receivers;
 
-import android.Manifest;
+
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationManager;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
+
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.internal.zzceb;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.Geofence;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceIdService;
+import com.sams.unbeezy.MainActivity;
 import com.sams.unbeezy.PanicAttackActivity;
 import com.sams.unbeezy.R;
 import com.sams.unbeezy.fragments.AlarmFragment;
+import com.sams.unbeezy.helpers.GenericAPICaller;
 import com.sams.unbeezy.lists.DismisserServicesList;
-//import com.sams.unbeezy.services.LocationService;
+import com.sams.unbeezy.services.DataSyncService;
 import com.sams.unbeezy.services.LocationService;
-import com.sams.unbeezy.services.SchedulingService;
+import com.sams.unbeezy.services.UnbeezyFirebaseMessagingService;
 
-import java.security.Provider;
-import java.util.HashMap;
+import java.util.Random;
 
 /**
  * Created by wennyyustalim on 19/02/18.
@@ -54,30 +37,58 @@ public class AlarmReceiver extends BroadcastReceiver {
     public static final String ALARM_START_ACTION = "START_PANIC_ATTACK";
     public static final String ALARM_CHECK_LOCATION = "START_CHECK_LOCATION";
     public static final String LOCATION_RECEIVED_ACTION = "LOCATION_RECEIVED";
+    public static final String LOCATION_RECEIVED_ACTION_OUTSIDE_RANGE = "OUTSIDE_ITB_DETECTED";
+    public static final String LOCATION_RECEIVED_ACTION_INSIDE_RANGE = "INSIDE_ITB_DETECTED";
     public static final String LOCATION_IN_RANGE_CODE = "locationInrange";
     public static final Boolean LOCATION_IN_RANGE = true;
     public static final Boolean LOCATION_OUT_RANGE = false;
+    public static boolean isWaitingLocationSettingFlag = false;
     public AlarmReceiver() {
-
     }
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(final Context context, final Intent intent) {
         Log.d(TAG, "Intent received");
         if(intent.getAction().equals(ALARM_START_ACTION)) {
-            Intent intent1 = new Intent(context, PanicAttackActivity.class);
-            SharedPreferences sharedPreferences = context.getSharedPreferences("UnbeezyPref",Context.MODE_PRIVATE);
-            String code = sharedPreferences.getString("dismisserMode",null);
-            intent1.putExtra(DismisserServicesList.DISMISSER_CLASS_INTENT_CODE,code);
-            context.startActivity(intent1);
+            startPanicAttack(context);
         } else  if(intent.getAction().equals(ALARM_CHECK_LOCATION)){
-            Log.d(TAG, "Location Received!");
+            Log.d(TAG, "Check Location Intent Received!");
             Intent intent1  = new Intent(context, LocationService.class);
             context.startService(intent1);
-        } else if(intent.getAction().equals(LOCATION_RECEIVED_ACTION)) {
+            isWaitingLocationSettingFlag = true;
+        } else if(intent.getAction().equals(LOCATION_RECEIVED_ACTION_INSIDE_RANGE) && isWaitingLocationSettingFlag) {
+            Log.d(TAG, "Inside Range Detected!");
+            isWaitingLocationSettingFlag =false;
+//            createNotification(context, "Class Reminder", "Don't forget your class check in schedule", MainActivity.class);
+
+            new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(5000);
+                        Intent intent1 = new Intent(context, DataSyncService.class);
+                        intent1.setAction("PUSH_NOTIF");
+                        context.startService(intent1);
+                    } catch (Exception e) {
+
+                    }
+
+                }
+            }.run();
+        } else if(intent.getAction().equals(LOCATION_RECEIVED_ACTION_OUTSIDE_RANGE) && isWaitingLocationSettingFlag) {
+            Log.d(TAG, "Outside Range Detected!");
+            isWaitingLocationSettingFlag =false;
+            startPanicAttack(context);
 
         }
+    }
 
 
 
+    private void startPanicAttack(Context context) {
+        Intent intent1 = new Intent(context, PanicAttackActivity.class);
+        SharedPreferences sharedPreferences = context.getSharedPreferences("UnbeezyPref",Context.MODE_PRIVATE);
+        String code = sharedPreferences.getString("dismisserMode",null);
+        intent1.putExtra(DismisserServicesList.DISMISSER_CLASS_INTENT_CODE,code);
+        context.startActivity(intent1);
     }
 }
