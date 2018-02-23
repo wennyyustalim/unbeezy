@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -19,6 +20,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class EditTaskActivity extends BaseActivity {
+    private final String LOG_TAG = EditTaskActivity.class.getSimpleName();
     private Calendar calendar = Calendar.getInstance();
     private TextView date_picker;
     private TextView time_picker;
@@ -113,12 +115,44 @@ public class EditTaskActivity extends BaseActivity {
         return (!taskTitle.isEmpty() && !date.isEmpty() && !time.isEmpty());
     }
 
+    private boolean isTaskDateValid() {
+        TextView date_picker = (TextView) findViewById(R.id.date_picker);
+        TextView time_picker = (TextView) findViewById(R.id.time_picker);
+
+        String date = date_picker.getText().toString();
+        String time = time_picker.getText().toString();
+        Log.d(LOG_TAG, date);
+        Log.d(LOG_TAG, time);
+
+        String[] dateComponents = date.split("/");
+        String[] timeComponents = time.split(":");
+        Log.d(LOG_TAG, dateComponents[0] + "/" + dateComponents[1] + "/" + dateComponents[2]);
+        Log.d(LOG_TAG, timeComponents[0] + ":" + timeComponents[1]);
+
+        Calendar now = Calendar.getInstance();
+        Calendar taskDate = Calendar.getInstance();
+        taskDate.set(Calendar.YEAR, Integer.parseInt(dateComponents[2]));
+        taskDate.set(Calendar.MONTH, (Integer.parseInt(dateComponents[1]) - 1));
+        taskDate.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dateComponents[0]));
+        taskDate.set(Calendar.HOUR_OF_DAY, Integer.parseInt(timeComponents[0]));
+        taskDate.set(Calendar.MINUTE, Integer.parseInt(timeComponents[1]));
+
+        Log.d(LOG_TAG, "task date: " + taskDate.getTimeInMillis());
+        Log.d(LOG_TAG, "now: " + now.getTimeInMillis());
+
+        return (taskDate.compareTo(now) > 0);
+    }
+
     private void saveTask() {
         if (isFormFilled()) {
-            Intent resultIntent = new Intent();
-            resultIntent.putExtra("editedTask", gson.toJson(model));
-            setResult(RESULT_OK, resultIntent);
-            finish();
+            if (isTaskDateValid()) {
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("editedTask", gson.toJson(model));
+                setResult(RESULT_OK, resultIntent);
+                finish();
+            } else {
+                Toast.makeText(this, "Please enter a correct task time", Toast.LENGTH_SHORT).show();
+            }
         } else {
             Toast.makeText(this, "Please fill all fields in the form", Toast.LENGTH_SHORT).show();
         }
