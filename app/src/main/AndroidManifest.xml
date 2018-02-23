@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -78,6 +79,13 @@
             android:exported="true" />
         <service android:name=".services.UnbeezyFirebaseMessagingService" />
         <service android:name=".services.UnbeezyFirebaseInstanceIDService" />
+        <service
+            android:name=".services.GeofenceLocationService"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".services.FusedLocationService"
+            android:exported="false"></service>
     </application>
 
 </manifest>
