@@ -180,7 +180,7 @@ public class ScheduleFragment extends Fragment {
 ////        Log.d("SchedF", "onDestroy Called");
 //    }
 
-    public void updateLayout(final TreeMap<String,CourseModel> coursesArray) {
+    public void updateLayout(final Map<String,CourseModel> coursesArray) {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -190,7 +190,7 @@ public class ScheduleFragment extends Fragment {
 
     }
 
-    private void adaptLinearLayout(LinearLayout layout, TreeMap<String, CourseModel> coursesArray) {
+    private void adaptLinearLayout(LinearLayout layout, Map<String, CourseModel> coursesArray) {
         layout.removeAllViews();
         Log.d("NEWADAPTOR",gson.toJson(coursesArray));
         int height  = 0 ;

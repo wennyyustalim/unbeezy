@@ -20,6 +20,7 @@ import com.sams.unbeezy.controllers.AlarmFragmentController;
 import com.sams.unbeezy.models.AlarmModel;
 
 import java.util.List;
+import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -103,7 +104,7 @@ public class AlarmFragment extends Fragment {
 //        }
 //    }
 
-    public void updateLayout(final List<AlarmModel> alarmsArray) {
+    public void updateLayout(final Map<String,AlarmModel> alarmsArray) {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -112,21 +113,28 @@ public class AlarmFragment extends Fragment {
         });
     }
 
-    private void adaptLinearLayout(LinearLayout layout, List<AlarmModel> alarmsArray) {
+    private void adaptLinearLayout(LinearLayout layout, Map<String,AlarmModel> alarmsArray) {
         layout.removeAllViews();
         Log.d("NEWADAPTOR", gson.toJson(alarmsArray));
         int height = 0;
-        for (AlarmModel item : alarmsArray) {
-            View inflated = inflateLayout(item, layout);
+        for (Map.Entry<String, AlarmModel> item : alarmsArray.entrySet()) {
+            View inflated = inflateLayout(item.getKey(),item.getValue(), layout);
             layout.addView(inflated);
             height += inflated.getMeasuredHeight();
         }
         layout.getLayoutParams().height = height;
     }
 
-    private View inflateLayout(AlarmModel model, ViewGroup parent) {
+    private View inflateLayout(final String key, AlarmModel model, ViewGroup parent) {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View inflated = inflater.inflate(R.layout.component_alarms_list_view, parent, false);
+        inflated.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                controller.deleteData(key);
+                return true;
+            }
+        });
         TextView alarmTime = inflated.findViewById(R.id.alarm_time);
         String hour = Integer.toString(model.getHour());
         String minute = Integer.toString(model.getMinute());

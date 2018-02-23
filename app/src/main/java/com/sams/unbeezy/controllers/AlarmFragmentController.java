@@ -1,5 +1,7 @@
 package com.sams.unbeezy.controllers;
 
+import android.util.ArrayMap;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -11,6 +13,7 @@ import com.sams.unbeezy.services.FirebaseDatabaseService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 /**
  * Created by wennyyustalim on 21/02/18.
@@ -19,7 +22,7 @@ import java.util.List;
 public class AlarmFragmentController {
     static String LOG_TAG = "UNBEEZY_ALARM_CONTROLLER";
 
-    List<AlarmModel> dataStore;
+    ArrayMap<String, AlarmModel> dataStore;
     DatabaseReference databaseReference;
 
     AlarmFragment fragment;
@@ -41,10 +44,10 @@ public class AlarmFragmentController {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                dataStore = new ArrayList<>();
+                dataStore = new ArrayMap<>();
                 if(dataSnapshot.getValue() != null) {
                     for(DataSnapshot item : dataSnapshot.getChildren()) {
-                        dataStore.add(item.getValue(AlarmModel.class));
+                        dataStore.put(item.getKey(),item.getValue(AlarmModel.class));
                     }
                     fragment.updateLayout(dataStore);
                 }
@@ -56,5 +59,14 @@ public class AlarmFragmentController {
 
             }
         });
+    }
+
+    public void flushLayout() {
+        dataStore = new ArrayMap<>();
+        fragment.updateLayout(dataStore);
+    }
+    public void deleteData(String key) {
+        databaseReference.child(key).removeValue();
+        flushLayout();
     }
 }

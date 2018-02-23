@@ -1,6 +1,7 @@
 package com.sams.unbeezy.controllers;
 
 import android.content.Intent;
+import android.util.ArrayMap;
 import android.util.Log;
 
 import com.google.firebase.database.ChildEventListener;
@@ -18,6 +19,7 @@ import com.sams.unbeezy.services.FirebaseDatabaseService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 /**
@@ -25,7 +27,7 @@ import java.util.TreeMap;
  */
 
 public class ScheduleFragmentController {
-    TreeMap<String,CourseModel> coursesData;
+    Map<String,CourseModel> coursesData;
     DatabaseReference coursesDataRef;
     ScheduleFragment fragment;
     DatabaseReference scheduleDataRef;
@@ -60,7 +62,7 @@ public class ScheduleFragmentController {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                coursesData = new TreeMap<>();
+                coursesData = new ArrayMap<>();
                 fragment.updateLayout(coursesData);
 
             }
