@@ -75,6 +75,7 @@ public class SchedulingService extends Service {
                             Log.d(LOG_TAG,String.format("Set alarm for %d %d, millis: %d",alarmModel.getHour(),alarmModel.getMinute(), calendar.getTimeInMillis()));
 
                         } else {
+                            pendingIntent.cancel();
                             alarmManager.cancel(pendingIntent);
                             Log.d(LOG_TAG,String.format("Cancel alarm for %d %d, millis: %d",alarmModel.getHour(),alarmModel.getMinute(), calendar.getTimeInMillis()));
 
