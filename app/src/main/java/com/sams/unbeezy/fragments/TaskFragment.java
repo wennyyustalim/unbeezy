@@ -47,6 +47,12 @@ public class TaskFragment extends Fragment {
 
 
     @Override
+    public void onStart() {
+        super.onStart();
+        controller = new TaskFragmentController(this);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         // The last two arguments ensure LayoutParams are inflated

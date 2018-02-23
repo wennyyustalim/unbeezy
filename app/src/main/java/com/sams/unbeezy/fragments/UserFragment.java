@@ -26,6 +26,7 @@ import com.sams.unbeezy.lists.DismisserServicesList;
 public class UserFragment extends Fragment {
     private String LOG_TAG = "UserFragment";
     TextView personName;
+    TextView userNameAcronym;
     String personNameStr;
     SharedPreferences pref;
     @Override
@@ -74,9 +75,20 @@ public class UserFragment extends Fragment {
             }
         });
         personName = (TextView) rootView.findViewById(R.id.person_name);
+        userNameAcronym = (TextView) rootView.findViewById(R.id.user_name_acronym);
         try {
             personNameStr = pref.getString("personName", null);
+            String[] names = personNameStr.split(" ");
+            String acronym = null;
+            try {
+                acronym = names[0].substring(0,1) + names[1].substring(0,1);
+            } catch (NullPointerException e) {
+                acronym = names[0].substring(0,1);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             personName.setText(personNameStr);
+            userNameAcronym.setText(acronym);
         } catch (NullPointerException e) {
             Log.d(LOG_TAG, "Person's Name not found");
 
