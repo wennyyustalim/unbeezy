@@ -1,6 +1,7 @@
 package com.sams.unbeezy;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.PersistableBundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -32,6 +33,27 @@ public class MainActivity extends BaseActivity {
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setOffscreenPageLimit(4);
         setTabIcons(tabLayout);
+
+        GPSTracker gps = new GPSTracker(this);
+
+        if(gps.canGetLocation()){
+            Location loc = gps.getLocation();
+            double lat = loc.getLatitude();
+            double lon = loc.getLongitude();
+            Log.d("LOCATION", String.format("Lat: %f, Lon: %f", lat, lon));
+            Boolean outsideITB = gps.isOutsideRange();
+            if(outsideITB) {
+                Log.d("MainActivity", "You're outside!!!!!");
+            } else {
+                Log.d("MainActivity", "You're inside!!!!!");
+            }
+            double testDistance = gps.distanceFromITB(-6.888505, 107.613427);
+            Log.d("MainActivity", String.format("Jaraknya segini: %f", testDistance));
+
+
+        } else {
+            Log.d("LOCATION", "Location can't be obtained");
+        }
     }
 
     @Override

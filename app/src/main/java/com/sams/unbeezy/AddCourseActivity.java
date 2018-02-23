@@ -84,7 +84,7 @@ public class AddCourseActivity extends BaseActivity {
                 // to the user.
 //                Log.d("UNBEEZY",(data.getStringExtra("scheduleList")));
                 CourseScheduleItemModel[] scheduleItemModel = gson.fromJson(data.getStringExtra("scheduleList"), CourseScheduleItemModel[].class);
-//                Log.d("UNBEEZ", gson.toJson(scheduleItemModel));
+//                Log.d("UNBEEZ", gson.toJson(scheduleItemModel));\
                 if(scheduleItemModel.length == 0) {
                     cancelIcon.setVisibility(View.VISIBLE);
                     checkedIcon.setVisibility(View.GONE);
