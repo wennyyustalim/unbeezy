@@ -64,13 +64,14 @@ public class SchedulingService extends Service {
                         }
 
                         Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
+                        intent.setAction(AlarmReceiver.ALARM_START_ACTION);
                         intent.putExtra("needLocation", false);
                         intent.putExtra("description", "Wake Up!");
                         intent.putExtra("settedClock",String.format("%d %d", alarmModel.getHour(),alarmModel.getMinute() ));
-                        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),(int) (11100000+(alarmModel.getHour()*3600)+alarmModel.getMinute()*60),intent,0);
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),(11100000+(alarmModel.getHour()*3600)+alarmModel.getMinute()*60),intent,0);
 
                         if(alarmModel.isOn()) {
-                            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY, pendingIntent);
+                            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
                             Log.d(LOG_TAG,String.format("Set alarm for %d %d, millis: %d",alarmModel.getHour(),alarmModel.getMinute(), calendar.getTimeInMillis()));
 
                         } else {
@@ -123,7 +124,7 @@ public class SchedulingService extends Service {
 //                            intent.putExtra("description", "GO TO CAMPUS!!!!!");
 //                            intent.putExtra("settedClock",String.format("day: %d hour:%d",settedDay, hour));
                             PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),Integer.parseInt(String.format("111%d%d",day,hour)),intent,0);
-                            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY, pendingIntent);
+                            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
                             Log.d(LOG_TAG,String.format("Set alarm for %d %d",settedDay,hour));
                         }
                     }

@@ -27,6 +27,7 @@ import com.sams.unbeezy.controllers.ScheduleFragmentController;
 import com.sams.unbeezy.models.CourseModel;
 import com.sams.unbeezy.models.CourseScheduleItemModel;
 import com.sams.unbeezy.models.SchedulesModel;
+import com.sams.unbeezy.services.DataSyncService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,6 +87,8 @@ public class ScheduleFragment extends Fragment {
                 R.layout.fragment_schedule, container, false);
         schedulesData = new SchedulesModel();
         controller.updateScheduleData();
+        Intent intent = new Intent(getContext(), DataSyncService.class);
+        getActivity().startService(intent);
         controller.updateData();
         FloatingActionButton scheduleFAB = rootView.findViewById(R.id.schedule_insert_fab);
         scheduleFAB.setOnClickListener(new View.OnClickListener() {

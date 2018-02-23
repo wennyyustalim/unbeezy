@@ -48,37 +48,39 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(final Context context, final Intent intent) {
         Log.d(TAG, "Intent received");
-        if(intent.getAction().equals(ALARM_START_ACTION)) {
-            startPanicAttack(context);
-        } else  if(intent.getAction().equals(ALARM_CHECK_LOCATION)){
-            Log.d(TAG, "Check Location Intent Received!");
-            Intent intent1  = new Intent(context, LocationService.class);
-            context.startService(intent1);
-            isWaitingLocationSettingFlag = true;
-        } else if(intent.getAction().equals(LOCATION_RECEIVED_ACTION_INSIDE_RANGE) && isWaitingLocationSettingFlag) {
-            Log.d(TAG, "Inside Range Detected!");
-            isWaitingLocationSettingFlag =false;
+        if(intent != null && intent.getAction() != null) {
+            if (intent.getAction().equals(ALARM_START_ACTION)) {
+                startPanicAttack(context);
+            } else if (intent.getAction().equals(ALARM_CHECK_LOCATION)) {
+                Log.d(TAG, "Check Location Intent Received!");
+                Intent intent1 = new Intent(context, LocationService.class);
+                context.startService(intent1);
+                isWaitingLocationSettingFlag = true;
+            } else if (intent.getAction().equals(LOCATION_RECEIVED_ACTION_INSIDE_RANGE) && isWaitingLocationSettingFlag) {
+                Log.d(TAG, "Inside Range Detected!");
+                isWaitingLocationSettingFlag = false;
 //            createNotification(context, "Class Reminder", "Don't forget your class check in schedule", MainActivity.class);
 
-            new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(5000);
-                        Intent intent1 = new Intent(context, DataSyncService.class);
-                        intent1.setAction("PUSH_NOTIF");
-                        context.startService(intent1);
-                    } catch (Exception e) {
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(5000);
+                            Intent intent1 = new Intent(context, DataSyncService.class);
+                            intent1.setAction("PUSH_NOTIF");
+                            context.startService(intent1);
+                        } catch (Exception e) {
+
+                        }
 
                     }
+                }.run();
+            } else if (intent.getAction().equals(LOCATION_RECEIVED_ACTION_OUTSIDE_RANGE) && isWaitingLocationSettingFlag) {
+                Log.d(TAG, "Outside Range Detected!");
+                isWaitingLocationSettingFlag = false;
+                startPanicAttack(context);
 
-                }
-            }.run();
-        } else if(intent.getAction().equals(LOCATION_RECEIVED_ACTION_OUTSIDE_RANGE) && isWaitingLocationSettingFlag) {
-            Log.d(TAG, "Outside Range Detected!");
-            isWaitingLocationSettingFlag =false;
-            startPanicAttack(context);
-
+            }
         }
     }
 

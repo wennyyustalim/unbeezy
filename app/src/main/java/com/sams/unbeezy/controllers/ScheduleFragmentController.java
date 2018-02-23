@@ -40,6 +40,7 @@ public class ScheduleFragmentController {
         coursesDataRef = FirebaseDatabaseService.getInstance().child("courses");
         scheduleDataRef = FirebaseDatabaseService.getInstance().child("schedules");
         gson = new Gson();
+
         updateData();
         updateScheduleData();
     }
@@ -77,6 +78,8 @@ public class ScheduleFragmentController {
     public void flushData() {
         coursesData = new TreeMap<>();
         fragment.updateLayout(coursesData);
+        Intent intent = new Intent(fragment.getContext(), DataSyncService.class);
+        fragment.getActivity().startService(intent);
         schedulesData = new SchedulesModel();
         fragment.updateScheduleTable(schedulesData);
 
