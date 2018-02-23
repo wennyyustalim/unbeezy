@@ -60,7 +60,9 @@ public class AlarmFragmentController {
             }
         });
     }
-
+    public void toggleData(String key, boolean data) {
+        databaseReference.child(key).child("on").setValue(data);
+    }
     public void flushLayout() {
         dataStore = new ArrayMap<>();
         fragment.updateLayout(dataStore);

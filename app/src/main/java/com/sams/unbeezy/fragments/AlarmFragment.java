@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -133,6 +135,13 @@ public class AlarmFragment extends Fragment {
             public boolean onLongClick(View view) {
                 controller.deleteData(key);
                 return true;
+            }
+        });
+        ToggleButton toggleButton = inflated.findViewById(R.id.alarm_toggle_button);
+        toggleButton.setChecked(model.isOn());
+        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                controller.toggleData(key,isChecked);
             }
         });
         TextView alarmTime = inflated.findViewById(R.id.alarm_time);
