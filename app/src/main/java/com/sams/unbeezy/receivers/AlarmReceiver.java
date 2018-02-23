@@ -84,10 +84,9 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
     }
 
-
-
     private void startPanicAttack(Context context) {
         Intent intent1 = new Intent(context, PanicAttackActivity.class);
+        intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         SharedPreferences sharedPreferences = context.getSharedPreferences("UnbeezyPref",Context.MODE_PRIVATE);
         String code = sharedPreferences.getString("dismisserMode",null);
         intent1.putExtra(DismisserServicesList.DISMISSER_CLASS_INTENT_CODE,code);
