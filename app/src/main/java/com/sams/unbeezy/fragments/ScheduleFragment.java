@@ -180,7 +180,7 @@ public class ScheduleFragment extends Fragment {
 ////        Log.d("SchedF", "onDestroy Called");
 //    }
 
-    public void updateLayout(final List<CourseModel> coursesArray) {
+    public void updateLayout(final Map<String,CourseModel> coursesArray) {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -190,12 +190,12 @@ public class ScheduleFragment extends Fragment {
 
     }
 
-    private void adaptLinearLayout(LinearLayout layout, List<CourseModel> coursesArray) {
+    private void adaptLinearLayout(LinearLayout layout, Map<String, CourseModel> coursesArray) {
         layout.removeAllViews();
         Log.d("NEWADAPTOR",gson.toJson(coursesArray));
-         int height  = 0 ;
-        for(CourseModel item : coursesArray) {
-            View inflated = inflateLayout(item,layout);
+        int height  = 0 ;
+        for(Map.Entry <String,CourseModel> item : coursesArray.entrySet()) {
+            View inflated = inflateLayout(item.getKey(),item.getValue(),layout);
             layout.addView(inflated);
             height += inflated.getMeasuredHeight();
         }
@@ -204,9 +204,17 @@ public class ScheduleFragment extends Fragment {
 
 
 
-    private View inflateLayout(CourseModel model, ViewGroup parent){
+    private View inflateLayout(final String key, CourseModel model, ViewGroup parent){
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View inflated = inflater.inflate(R.layout.component_courses_list_view, parent, false);
+        inflated.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                controller.deleteCourseData(key);
+                return true;
+            }
+
+        });
         TextView courseName =  inflated.findViewById(R.id.course_name);
         courseName.setText(String.format("%s %s",model.getCourseId(), model.getCourseName()));
         TextView lecturerName = inflated.findViewById(R.id.lecturer_name);

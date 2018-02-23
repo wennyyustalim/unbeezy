@@ -2,6 +2,7 @@ package com.sams.unbeezy.controllers;
 
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.ArrayMap;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -15,6 +16,7 @@ import com.sams.unbeezy.services.FirebaseDatabaseService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Richard on 21-Feb-18.
@@ -23,7 +25,7 @@ import java.util.List;
 public class TaskFragmentController {
     static String LOG_TAG = "UNBEEZY_TASK_CONTROLLER";
 
-    ArrayList<TaskModel> dataStore;
+    ArrayMap<String, TaskModel> dataStore;
     DatabaseReference databaseReference;
 
     TaskFragment fragment;
@@ -47,12 +49,12 @@ public class TaskFragmentController {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                dataStore = new ArrayList<>();
+                dataStore = new ArrayMap<>();
                 if(dataSnapshot.getValue() != null) {
                     for(DataSnapshot item : dataSnapshot.getChildren()) {
-                        dataStore.add(item.getValue(TaskModel.class));
+                        dataStore.put(item.getKey(), item.getValue(TaskModel.class));
                     }
-                    TaskItemAdapter taskItemAdapter = new TaskItemAdapter(fragment.getActivity().getApplicationContext(), dataStore);
+                    TaskItemAdapter taskItemAdapter = new TaskItemAdapter(fragment.getActivity().getApplicationContext(), dataStore, TaskFragmentController.this);
                     fragment.taskList.setAdapter(taskItemAdapter);
                     fragment.taskList.setLayoutManager(new LinearLayoutManager(fragment.getActivity().getApplicationContext()));
                 }
@@ -63,5 +65,15 @@ public class TaskFragmentController {
 
             }
         });
+    }
+    public void flushLayout() {
+        dataStore = new ArrayMap<>();
+        TaskItemAdapter taskItemAdapter = new TaskItemAdapter(fragment.getActivity().getApplicationContext(), dataStore, this);
+        fragment.taskList.setAdapter(taskItemAdapter);
+        fragment.taskList.setLayoutManager(new LinearLayoutManager(fragment.getActivity().getApplicationContext()));
+    }
+    public void deleteData(String key ) {
+        databaseReference.child(key).removeValue();
+        flushLayout();
     }
 }

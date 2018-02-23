@@ -1,8 +1,10 @@
 package com.sams.unbeezy.controllers;
 
 import android.content.Intent;
+import android.util.ArrayMap;
 import android.util.Log;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -17,13 +19,15 @@ import com.sams.unbeezy.services.FirebaseDatabaseService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by kennethhalim on 2/21/18.
  */
 
 public class ScheduleFragmentController {
-    List<CourseModel> coursesData;
+    Map<String,CourseModel> coursesData;
     DatabaseReference coursesDataRef;
     ScheduleFragment fragment;
     DatabaseReference scheduleDataRef;
@@ -43,10 +47,10 @@ public class ScheduleFragmentController {
         coursesDataRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                coursesData = new ArrayList<>();
+                coursesData = new TreeMap<>();
                 if(dataSnapshot.getValue() != null) {
                    for(DataSnapshot item : dataSnapshot.getChildren()) {
-                       coursesData.add(item.getValue(CourseModel.class));
+                       coursesData.put(item.getKey(),item.getValue(CourseModel.class));
                    }
                    fragment.updateLayout(coursesData);
                     Intent intent = new Intent(fragment.getContext(), DataSyncService.class);
@@ -58,6 +62,8 @@ public class ScheduleFragmentController {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                coursesData = new ArrayMap<>();
+                fragment.updateLayout(coursesData);
 
             }
         });
@@ -65,6 +71,14 @@ public class ScheduleFragmentController {
     public void addData(CourseModel model) {
         coursesDataRef.push().setValue(model);
         updateData();
+
+    }
+
+    public void flushData() {
+        coursesData = new TreeMap<>();
+        fragment.updateLayout(coursesData);
+        schedulesData = new SchedulesModel();
+        fragment.updateScheduleTable(schedulesData);
 
     }
 
@@ -87,6 +101,11 @@ public class ScheduleFragmentController {
 
             }
         });
-    }
 
+    }
+    public void deleteCourseData(String key) {
+        coursesDataRef.child(key).removeValue();
+        updateData();
+        flushData();
+    }
 }

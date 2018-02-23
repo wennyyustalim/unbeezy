@@ -40,6 +40,7 @@ public class RiseAndShineDismisserService extends PanicDismisserService implemen
     public void onSensorChanged(SensorEvent sensorEvent) {
         if(sensorEvent.sensor.getType() == Sensor.TYPE_LIGHT) {
             if(sensorEvent.values[0] >= THRESHOLD) {
+                mSensorManager.unregisterListener(this, mLight);
                 dismiss();
             }
         }

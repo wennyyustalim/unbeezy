@@ -24,7 +24,17 @@ import com.sams.unbeezy.R;
 
 public class UnbeezyFirebaseMessagingService extends FirebaseMessagingService {
     private final int NOTIFICATION_ID = 3;
+    public static UnbeezyFirebaseMessagingService _instance;
+    public static UnbeezyFirebaseMessagingService getInstance(){
+        if(_instance ==null) {
+            _instance = new UnbeezyFirebaseMessagingService();
+        }
+        return _instance;
+    }
 
+    UnbeezyFirebaseMessagingService() {
+        _instance = this;
+    }
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
@@ -36,7 +46,8 @@ public class UnbeezyFirebaseMessagingService extends FirebaseMessagingService {
         }
     }
 
-    private void createNotification(String title, String body) {
+    public void createNotification(String title, String body) {
+        Log.d("PUSH_NOTIF", "CREATING PUSH NOTIF");
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, NOTIFICATION_ID, intent,

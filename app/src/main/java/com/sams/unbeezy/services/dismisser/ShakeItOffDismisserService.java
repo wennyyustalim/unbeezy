@@ -24,7 +24,7 @@ public class ShakeItOffDismisserService extends PanicDismisserService implements
     private static final float SHAKE_THRESHOLD = 80.5f; // m/S**2
     private static final int MIN_TIME_BETWEEN_SHAKES_MILLISECS = 1000;
     private long mLastShakeTime;
-
+    Sensor accelerometer;
 
     public ShakeItOffDismisserService() {
         super("ShakeItOffDisimisserService", "Shake It Off!", "Shake your phone");
@@ -37,7 +37,7 @@ public class ShakeItOffDismisserService extends PanicDismisserService implements
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
         // Listen for shakes
-        Sensor accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+         accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         if (accelerometer != null) {
             mSensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
         }
@@ -59,6 +59,7 @@ public class ShakeItOffDismisserService extends PanicDismisserService implements
 
                 if (acceleration > SHAKE_THRESHOLD) {
                     mLastShakeTime = curTime;
+                    mSensorManager.unregisterListener(this, accelerometer);
                     dismiss();
                 }
             }

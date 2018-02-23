@@ -118,9 +118,10 @@ public class SchedulingService extends Service {
                             }
 
                             Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
-                            intent.putExtra("needLocation", true);
-                            intent.putExtra("description", "GO TO CAMPUS!!!!!");
-                            intent.putExtra("settedClock",String.format("day: %d hour:%d",settedDay, hour));
+                            intent.setAction(AlarmReceiver.ALARM_CHECK_LOCATION);
+//                            intent.putExtra("needLocation", true);
+//                            intent.putExtra("description", "GO TO CAMPUS!!!!!");
+//                            intent.putExtra("settedClock",String.format("day: %d hour:%d",settedDay, hour));
                             PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),Integer.parseInt(String.format("111%d%d",day,hour)),intent,0);
                             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY, pendingIntent);
                             Log.d(LOG_TAG,String.format("Set alarm for %d %d",settedDay,hour));
