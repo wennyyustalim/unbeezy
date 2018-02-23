@@ -63,7 +63,7 @@ public abstract class BaseActivity extends AppCompatActivity{
             editor.apply();
         }
     }
-    public void signOut() {
+    public void signOut(View view) {
         FirebaseAuth.getInstance().signOut();
         checkAuthenticated();
     }
