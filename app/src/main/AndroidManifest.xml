@@ -88,20 +88,7 @@
             </intent-filter>
         </service>
         <service android:name=".services.UnbeezyFirebaseInstanceIDService" />
-
-        <!--<activity android:name=".GeofenceActivity">-->
-            <!--<meta-data-->
-                <!--android:name="com.google.android.geo.API_KEY"-->
-                <!--android:value="AIzaSyDFEydi419xzl2NQAIwSOrmAugYAq1toe4" />-->
-        <!--</activity>-->
-
-        <service
-            android:name=".services.GeofenceLocationService"
-            android:enabled="true"
-            android:exported="true" />
-        <service
-            android:name=".services.LocationService"
-            android:exported="false"></service>
+        <service android:name=".services.LocationService" />
     </application>
 
 </manifest>

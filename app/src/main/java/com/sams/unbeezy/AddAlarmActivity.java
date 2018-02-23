@@ -52,27 +52,11 @@ public class AddAlarmActivity extends BaseActivity {
         if(((ToggleButton) view).isChecked()) {
             newAlarm.switchOn();
             toastMessage = getString(R.string.alarm_on_toast);
-//
-//            Calendar calendar = Calendar.getInstance();
-//            calendar.setTimeInMillis(System.currentTimeMillis());
-//            calendar.set(Calendar.HOUR_OF_DAY, alarmTimePicker.getCurrentHour());
-//            calendar.set(Calendar.MINUTE, alarmTimePicker.getCurrentMinute());
-//            calendar.set(Calendar.SECOND, 0);
-//
-//            Intent intent = new Intent(AddAlarmActivity.this, AlarmReceiver.class);
-//            pendingIntent = PendingIntent.getBroadcast(AddAlarmActivity.this, 0, intent, 0);
-//            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),1000 * 10, pendingIntent);
         } else {
             newAlarm.switchOff();
             toastMessage = getString(R.string.alarm_off_toast);
-//            alarmManager.cancel(pendingIntent);
-            setAlarmText("");
         }
         Toast.makeText(AddAlarmActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
-    }
-
-    public void setAlarmText(String alarmText) {
-        alarmTextView.setText(alarmText);
     }
 
     public void onSaveButtonClicked(View view) {
