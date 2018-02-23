@@ -24,7 +24,7 @@ public class AddCourseActivity extends BaseActivity {
     ColorPicker cp;
     int selectedColor;
     String scheduleString;
-    int REQUEST_CODE = 0;
+    int REQUEST_CODE = 11;
 
     CourseModel model;
     ImageView checkedIcon;
@@ -83,8 +83,9 @@ public class AddCourseActivity extends BaseActivity {
                 // A contact was picked.  Here we will just display it
                 // to the user.
 //                Log.d("UNBEEZY",(data.getStringExtra("scheduleList")));
-                CourseScheduleItemModel[] scheduleItemModel = gson.fromJson(data.getStringExtra("scheduleList"), CourseScheduleItemModel[].class);
-//                Log.d("UNBEEZ", gson.toJson(scheduleItemModel));\
+                String intentString = data.getStringExtra("scheduleList");
+                CourseScheduleItemModel[] scheduleItemModel = gson.fromJson(intentString, CourseScheduleItemModel[].class);
+//                Log.d("UNBEEZ", gson.toJson(scheduleItemModel));
                 if(scheduleItemModel.length == 0) {
                     cancelIcon.setVisibility(View.VISIBLE);
                     checkedIcon.setVisibility(View.GONE);
