@@ -27,7 +27,8 @@
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@android:color/white">
+            android:background="@android:color/white"
+            android:paddingRight="10dp">
 
             <TextView
                 android:id="@+id/alarm_time"
@@ -47,11 +48,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/alarm_time"
                 android:layout_centerHorizontal="true"
+                android:layout_marginEnd="8dp"
                 android:layout_marginStart="100dp"
-                android:onClick="onToggleClicked"
-                android:text="Alarm On/Off"
                 android:textColorLink="@color/colorPrimary"
                 app:layout_constraintStart_toEndOf="@+id/alarm_time"
+                card_view:layout_constraintEnd_toEndOf="parent"
                 tools:layout_editor_absoluteY="2dp" />
 
         </android.support.constraint.ConstraintLayout>
