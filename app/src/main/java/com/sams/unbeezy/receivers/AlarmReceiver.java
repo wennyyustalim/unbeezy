@@ -37,7 +37,8 @@ import com.sams.unbeezy.PanicAttackActivity;
 import com.sams.unbeezy.R;
 import com.sams.unbeezy.fragments.AlarmFragment;
 import com.sams.unbeezy.lists.DismisserServicesList;
-import com.sams.unbeezy.services.FusedLocationService;
+//import com.sams.unbeezy.services.LocationService;
+import com.sams.unbeezy.services.LocationService;
 import com.sams.unbeezy.services.SchedulingService;
 
 import java.security.Provider;
@@ -51,6 +52,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     private static final int NOTIFICATION_ID = 0;
     private String TAG = "AlarmReceiver";
     public static final String ALARM_START_ACTION = "START_PANIC_ATTACK";
+    public static final String ALARM_CHECK_LOCATION = "START_CHECK_LOCATION";
     public static final String LOCATION_RECEIVED_ACTION = "LOCATION_RECEIVED";
     public static final String LOCATION_IN_RANGE_CODE = "locationInrange";
     public static final Boolean LOCATION_IN_RANGE = true;
@@ -62,18 +64,16 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "Intent received");
         if(intent.getAction().equals(ALARM_START_ACTION)) {
-            Boolean need = intent.getBooleanExtra("needLocation", false);
-            if (!need) {
-                Intent intent1 = new Intent(context, PanicAttackActivity.class);
-                SharedPreferences sharedPreferences = context.getSharedPreferences("UnbeezyPref");
-                intent1.putExtra(DismisserServicesList.DISMISSER_CLASS_INTENT_CODE, DismisserServicesList.RISE_AND_SHINE_CODE);
-                context.startActivity(intent1);
-            } else {
-                Intent intent1 = new Intent(context, FusedLocationService.class);
-                context.startService(intent1);
-            }
-        } else  {
+            Intent intent1 = new Intent(context, PanicAttackActivity.class);
+            SharedPreferences sharedPreferences = context.getSharedPreferences("UnbeezyPref",Context.MODE_PRIVATE);
+            String code = sharedPreferences.getString("dismisserMode",null);
+            intent1.putExtra(DismisserServicesList.DISMISSER_CLASS_INTENT_CODE,code);
+            context.startActivity(intent1);
+        } else  if(intent.getAction().equals(ALARM_CHECK_LOCATION)){
             Log.d(TAG, "Location Received!");
+            Intent intent1  = new Intent(context, LocationService.class);
+            context.startService(intent1);
+        } else if(intent.getAction().equals(LOCATION_RECEIVED_ACTION)) {
 
         }
 
