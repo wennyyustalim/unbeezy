@@ -1,5 +1,6 @@
 package com.sams.unbeezy.lists;
 
+import com.sams.unbeezy.services.dismisser.ArduitnowDismisserService;
 import com.sams.unbeezy.services.dismisser.PanicDismisserService;
 import com.sams.unbeezy.services.dismisser.RiseAndShineDismisserService;
 import com.sams.unbeezy.services.dismisser.ShakeItOffDismisserService;
@@ -13,8 +14,10 @@ import java.lang.reflect.Method;
 public class DismisserServicesList {
     public static final String RISE_AND_SHINE_CODE = "RASDSERVICE";
     public static final String SHAKE_IT_OFF_CODE = "SIODSERVICE";
+    public static final String AR_DU_IT_NOW_CODE = "ADINDSERVICE";
     public static Class RISE_AND_SHINE = RiseAndShineDismisserService.class;
     public static Class SHAKE_IT_OFF = ShakeItOffDismisserService.class;
+    public static Class AR_DU_IT_NOW = ArduitnowDismisserService.class;
     public static String DISMISSER_CLASS_INTENT_CODE = "DissmisserService";
 
     public static Class getDismisserClass(String code) {
@@ -26,6 +29,9 @@ public class DismisserServicesList {
                 case SHAKE_IT_OFF_CODE:
                     SHAKE_IT_OFF.newInstance();
                     return SHAKE_IT_OFF;
+                case AR_DU_IT_NOW_CODE:
+                    AR_DU_IT_NOW.newInstance();
+                    return AR_DU_IT_NOW;
                 default:
                     SHAKE_IT_OFF.newInstance();
                     return SHAKE_IT_OFF;
