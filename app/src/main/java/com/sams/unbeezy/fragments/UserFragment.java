@@ -107,23 +107,6 @@ public class UserFragment extends Fragment {
             }
         });
 
-//        final ToggleButton dismisserToggleButton = rootView.findViewById(R.id.dismisser_toggle);
-//        dismisserToggleButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                String toastMessage;
-//                SharedPreferences.Editor editor = pref.edit();
-//                if(dismisserToggleButton.isChecked()) {
-//                    toastMessage = "Rise and Shine Mode";
-//                    editor.putString("dismisserMode", DismisserServicesList.RISE_AND_SHINE_CODE);
-//                } else {
-//                    toastMessage = "Shake It Off Mode";
-//                    editor.putString("dismisserMode", DismisserServicesList.SHAKE_IT_OFF_CODE);
-//                }
-//                editor.apply();
-//                Toast.makeText(getContext(), toastMessage, Toast.LENGTH_SHORT).show();
-//            }
-//        });
         personName = (TextView) rootView.findViewById(R.id.person_name);
         userNameAcronym = (TextView) rootView.findViewById(R.id.user_name_acronym);
         try {
