@@ -1,5 +1,6 @@
 package com.sams.unbeezy.fragments;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -31,6 +32,10 @@ import org.w3c.dom.Text;
 
 public class UserFragment extends Fragment {
     private String LOG_TAG = "UserFragment";
+
+    private final static int REQUEST_ENABLE_BT = 1;
+    BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
     TextView personName;
     TextView userNameAcronym;
     String personNameStr;
@@ -91,6 +96,10 @@ public class UserFragment extends Fragment {
                     case "AR-DU-IT-NOW!":
                         toastMessage = "Ar-du-it-now! Mode";
                         editor.putString("dismisserMode", DismisserServicesList.AR_DU_IT_NOW_CODE);
+                        if (!bluetoothAdapter.isEnabled()) {
+                            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+                        }
                         break;
                     default:
                         toastMessage = "Shake It Off Mode";
