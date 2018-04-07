@@ -4,21 +4,26 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.sams.unbeezy.PanicAttackActivity;
 import com.sams.unbeezy.R;
 import com.sams.unbeezy.lists.DismisserServicesList;
 import com.sams.unbeezy.receivers.AlarmReceiver;
+
+import org.w3c.dom.Text;
 
 /**
  * Created by kennethhalim on 2/12/18.
@@ -59,23 +64,66 @@ public class UserFragment extends Fragment {
             }
         });
 
-        final ToggleButton dismisserToggleButton = rootView.findViewById(R.id.dismisser_toggle);
-        dismisserToggleButton.setOnClickListener(new View.OnClickListener() {
+        final Spinner dismisserSpinner = rootView.findViewById(R.id.dismisserSpinner);
+
+        ArrayAdapter<CharSequence> panicAttackDismisserTypeArrayAdapter =
+                ArrayAdapter.createFromResource(this.getActivity(),
+                        R.array.dismisser_types,
+                        android.R.layout.simple_dropdown_item_1line);
+
+        dismisserSpinner.setAdapter(panicAttackDismisserTypeArrayAdapter);
+
+        dismisserSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View view) {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String toastMessage;
                 SharedPreferences.Editor editor = pref.edit();
-                if(dismisserToggleButton.isChecked()) {
-                    toastMessage = "Rise and Shine Mode";
-                    editor.putString("dismisserMode", DismisserServicesList.RISE_AND_SHINE_CODE);
-                } else {
-                    toastMessage = "Shake It Off Mode";
-                    editor.putString("dismisserMode", DismisserServicesList.SHAKE_IT_OFF_CODE);
+                String selectedType = dismisserSpinner.getSelectedItem().toString();
+                switch (selectedType) {
+                    case "SHAKE IT OFF":
+                        toastMessage = "Shake It Off Mode";
+                        editor.putString("dismisserMode", DismisserServicesList.SHAKE_IT_OFF_CODE);
+                        break;
+                    case "RISE AND SHINE":
+                        toastMessage = "Rise and Shine Mode";
+                        editor.putString("dismisserMode", DismisserServicesList.RISE_AND_SHINE_CODE);
+                        break;
+                    case "AR-DU-IT-NOW!":
+                        toastMessage = "Ar-du-it-now! Mode";
+                        editor.putString("dismisserMode", DismisserServicesList.AR_DU_IT_NOW_CODE);
+                        break;
+                    default:
+                        toastMessage = "Shake It Off Mode";
+                        editor.putString("dismisserMode", DismisserServicesList.SHAKE_IT_OFF_CODE);
+                        break;
                 }
                 editor.apply();
                 Toast.makeText(getContext(), toastMessage, Toast.LENGTH_SHORT).show();
             }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
         });
+
+//        final ToggleButton dismisserToggleButton = rootView.findViewById(R.id.dismisser_toggle);
+//        dismisserToggleButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                String toastMessage;
+//                SharedPreferences.Editor editor = pref.edit();
+//                if(dismisserToggleButton.isChecked()) {
+//                    toastMessage = "Rise and Shine Mode";
+//                    editor.putString("dismisserMode", DismisserServicesList.RISE_AND_SHINE_CODE);
+//                } else {
+//                    toastMessage = "Shake It Off Mode";
+//                    editor.putString("dismisserMode", DismisserServicesList.SHAKE_IT_OFF_CODE);
+//                }
+//                editor.apply();
+//                Toast.makeText(getContext(), toastMessage, Toast.LENGTH_SHORT).show();
+//            }
+//        });
         personName = (TextView) rootView.findViewById(R.id.person_name);
         userNameAcronym = (TextView) rootView.findViewById(R.id.user_name_acronym);
         try {
