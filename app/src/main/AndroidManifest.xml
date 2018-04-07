@@ -82,6 +82,9 @@
             android:name=".services.dismisser.RiseAndShineDismisserService"
             android:exported="false" />
         <service
+            android:name=".services.dismisser.ArduitnowDismisserService"
+            android:exported="false" />
+        <service
             android:name=".services.SchedulingService"
             android:enabled="true"
             android:exported="true" />

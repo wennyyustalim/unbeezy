@@ -57,7 +57,7 @@ public class ArduitnowDismisserService extends PanicDismisserService {
         setArduinoSocket();
         connectToArduino();
 
-        ArduinoThread arduinoThread = new ArduinoThread(arduinoSocket);
+        arduinoThread = new ArduinoThread(arduinoSocket);
         arduinoThread.start();
 
         arduinoThread.write(String.format("%c", START_ALARM_CODE));
@@ -72,6 +72,13 @@ public class ArduitnowDismisserService extends PanicDismisserService {
                     stringBuilder.append(readMessage);
                     if (stringBuilder.charAt(0) == END_ALARM_CODE) {
                         dismiss();
+                        try {
+                            arduinoThread.mmInStream.close();
+                            arduinoThread.mmOutStream.close();
+                            arduinoSocket.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                     removeCallbacksAndMessages(null);
                 }
@@ -120,8 +127,8 @@ public class ArduitnowDismisserService extends PanicDismisserService {
     }
 
     private class ArduinoThread extends Thread {
-        private final InputStream mmInStream;
-        private final OutputStream mmOutStream;
+        public InputStream mmInStream;
+        public OutputStream mmOutStream;
 
         //creation of the connect thread
         public ArduinoThread(BluetoothSocket socket) {
