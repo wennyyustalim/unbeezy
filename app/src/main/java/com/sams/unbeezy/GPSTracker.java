@@ -20,6 +20,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
+import java.util.concurrent.TimeUnit;
+
 public class GPSTracker extends Service implements LocationListener {
     String LOG_TAG = "GPSTracker";
     private final Context mContext;
@@ -37,7 +39,7 @@ public class GPSTracker extends Service implements LocationListener {
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
 
     // The minimum time between updates in milliseconds
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
+    private static final long MIN_TIME_BW_UPDATES = TimeUnit.MINUTES.toMillis(1)
 
     protected LocationManager locationManager;
 
